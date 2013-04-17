@@ -16,5 +16,6 @@ minRow = min(filledRows);
 maxRow = max(filledRows);
 
 outIm = imbw(minRow:maxRow, minCol:maxCol);
+outIm = 1 - outIm;
 end
 
