@@ -96,20 +96,24 @@ relevant papers for extracting features from writing samples and
 constructing classifiers. From a preliminary scan through related
 literature, it appears that acquiring strong features is as important,
 if not more important than the construction of models for
-classification. As a result, we are currently opting to generate
-features ourselves, and have begun implementing and testing methods
-encountered during our literature search. We also will have to perform
-a number of preprocessing steps, as the Kaggle dataset is highly
-unconstrained. The images contain color and some amount of noise, the
-handwriting is not centered, and much of the text is written at a
-curve or a slant. As a result, segmenting and extracting lines, words,
-and characters from each image will be a challenge in itself, and this
-needs to be performed before a large number of features can be
-acquired.
+classification. We have also come across numerous papers describing
+different types of features, and the design of such features appears
+to be a very interesting problem. As a result, we are currently opting
+to generate features ourselves, and have begun implementing and
+testing methods encountered during our literature search. We also will
+have to perform a number of preprocessing steps, as the Kaggle dataset
+is highly unconstrained. The images contain color and some amount of
+noise, the handwriting is not centered, and much of the text is
+written at a curve or a slant. As a result, segmenting and extracting
+lines, words, and characters from each image will be a challenge in
+itself, and this needs to be performed before a large number of
+features can be acquired. Once we have successfully extracted features
+from our images, we should be able to implement the numerous
+classifiers we have learned from class, and benchmark our results
+against those obtained by the sources we are borrowing from.
 
 \begin{figure}
-  \centering
-  \fbox{\includegraphics[width=3in]{im.jpg}}
+  \centering \fbox{\includegraphics[width=2.6in]{im.jpg}}
   \caption{A sample training image\\}
   \label{fig:sample}
 \end{figure}
