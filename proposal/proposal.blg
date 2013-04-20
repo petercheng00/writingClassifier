@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: proposal.aux
+The style file: spiebib.bst
+Database file #1: report.bib
+Warning--empty year in kaggle
+Too many commas in name 1 of "Hassaïne, A., Al-Maadeed, S. and Bouridane, A." for entry geometricFeatures
+while executing---line 1072 of file spiebib.bst
+You've used 2 entries,
+            1993 wiz_defined-function locations,
+            511 strings with 4044 characters,
+and the built_in function-call counts, 277 in all, are:
+= -- 18
+> -- 9
+< -- 0
++ -- 4
+- -- 2
+* -- 20
+:= -- 41
+add.period$ -- 2
+call.type$ -- 2
+change.case$ -- 2
+chr.to.int$ -- 0
+cite$ -- 3
+duplicate$ -- 12
+empty$ -- 40
+format.name$ -- 2
+if$ -- 66
+int.to.chr$ -- 0
+int.to.str$ -- 2
+missing$ -- 1
+newline$ -- 9
+num.names$ -- 1
+pop$ -- 11
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 8
+stack$ -- 0
+substring$ -- 0
+swap$ -- 1
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 1
+width$ -- 3
+write$ -- 15
+(There was 1 error message)

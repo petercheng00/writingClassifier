@@ -20,7 +20,7 @@ textLines = lines(validInds);
 figure, imshow(im), hold on
 
 for k = 1:length(textLines)
-   xy = [lines(k).point1; lines(k).point2];
+   xy = [textLines(k).point1; textLines(k).point2];
    plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
 
    % Plot beginnings and ends of lines
