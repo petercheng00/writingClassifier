@@ -1,4 +1,5 @@
-function [getTextLines( im )
+function lineBoxInds = getTextLines( im )
+lineBoxInds = {};
 width = size(im,2);
 %im = edge(im, 'canny');
 [H,T,R] = hough(im, 'RhoResolution',1,'Theta',-90:1:89.5);
@@ -34,10 +35,9 @@ for k = 1:length(textLines)
     x = textLines(k).point1(1);
     y = textLines(k).point1(2);
     l = labeled(y,x);
-    currLine = false(size(im));
-    currLine(labeled==l) = 1;
-    viewimage(currLine);
-    keyboard
+    [r,c] = find(labeled == l);
+    lineBoxInds{end+1}
+    lines{end+1} = currLine;    
 end
 
 end

@@ -1,4 +1,5 @@
-function getTextLines( im )
+function boxes = getTextLines( im )
+boxes = {};
 width = size(im,2);
 %im = edge(im, 'canny');
 [H,T,R] = hough(im, 'RhoResolution',1,'Theta',-90:1:89.5);
@@ -16,7 +17,6 @@ for k = 1:length(lines)
                     (angle < -170) || (angle > 170);
 end
 textLines = lines(validInds);
-imcopy = im(:,:);
 for k = 1:length(textLines)
    x1 = textLines(k).point1(1);
    y1 = textLines(k).point1(2);
@@ -26,18 +26,20 @@ for k = 1:length(textLines)
    yinter = y1 - slope * (x1);
    x = linspace(1,width,100*width);
    y = slope * x + yinter;
-   index = sub2ind(size(imcopy),round(y),round(x));
-   imcopy(index) = 1;
+   index = sub2ind(size(im),round(y),round(x));
+   im(index) = 1;
 end
-[labeled] = bwlabel(imcopy);
+[labeled] = bwlabel(im);
 for k = 1:length(textLines)
     x = textLines(k).point1(1);
     y = textLines(k).point1(2);
     l = labeled(y,x);
-    currLine = false(size(im));
-    currLine(labeled==l) = 1;
-    viewimage(currLine);
-    keyboard
+    [r,c] = find(labeled == l);
+    currBox.minRow = min(r);
+    currBox.maxRow = max(r);
+    currBox.minCol = min(c);
+    currBox.maxCol = max(c);
+    boxes{end+1} = currBox;
 end
 
 end
