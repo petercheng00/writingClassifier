@@ -143,7 +143,7 @@ def angle_feature(file_name, ub, lb, plot=False):
 
 
 def main():
-    file_name = 'test_cleaned.png'
+    file_name = 'line_3.png'
     ub, lb, f1, f2, f3, f4, f5, f6 = height_features(file_name, plot=False)
     f7 = width_feature(file_name, plot=False)
     f8 = float(f2) / f7

@@ -81,7 +81,7 @@ def width_feature(file_name, plot=False):
 
 
 def main():
-    f1, f2, f3, f4, f5, f6 = height_features('test_cleaned.png', plot=False)
+    f1, f2, f3, f4, f5, f6 = height_features('images_subset/pre-processed/large.png', plot=False)
     f7 = width_feature('test_cleaned.png', plot=False)
     f8 = float(f2) / f7
     import pdb; pdb.set_trace()
