@@ -1,12 +1,8 @@
 function boxes = getWords( im )
 [height,width] = size(im);
 
-
-
 minWordLength = 0.02 * width;
 gapBetweenLetters = 0.6 * minWordLength;
-
-
 
 %im = edge(im, 'canny');
 [H,T,R] = hough(im, 'RhoResolution',1,'Theta',[-90:-85,85:89]);

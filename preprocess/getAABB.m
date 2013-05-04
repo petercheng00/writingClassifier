@@ -39,7 +39,7 @@ function [ aabb, angle ] = getAABB( inBox )
     hold on
     plot(newC(1,[1:end 1]),newC(2,[1:end 1]),'b')
     %}
-    
+
     minX = floor(min(newC(1,:)));
     maxX = ceil(max(newC(1,:)));
     minY = floor(min(newC(2,:)));
