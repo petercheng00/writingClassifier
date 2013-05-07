@@ -8,8 +8,21 @@ import operator
 from collections import defaultdict
 import pprint
 import math
+import os
+import csv
+import progressbar
 
 pr = pprint.PrettyPrinter(indent=2)
+
+
+def pbar(size):
+    bar = progressbar.ProgressBar(maxval=size,
+                                  widgets=[progressbar.Bar('=', '[', ']'),
+                                           ' ', progressbar.Percentage(),
+                                           ' ', progressbar.ETA(),
+                                           ' ', progressbar.Counter(),
+                                           '/%s' % size])
+    return bar
 
 
 def height_features(im, plot=False):
@@ -87,7 +100,7 @@ def width_feature(im, f2, plot=False):
     return f7, float(f2) / f7
 
 
-def get_intersection(y, x, goal_y, im, max_slides=3, slides=0):
+def get_intersection(y, x, goal_y, im, max_slides=5, slides=0):
     '''
     im is indexed (y, x) where y is vertical down and x is horizontal right
     origin is in upper left corner
@@ -126,15 +139,16 @@ def angle_feature(im, ub, lb, plot=False):
             if bottom is not None:
                 lines.append(((mid, x), bottom))
 
-    # angle calculated with respect to mid
+    # angle calculated with respect to mid, going counterclockwise
     angles = defaultdict(list)
     for (mid_y, p1x), (p2y, p2x) in lines:
         angle = math.degrees(math.atan2(mid_y - p2y, p2x - p1x))
         if angle < 0:
             angle += 180
         angles[(mid_y, p1x)].append(angle)
-    for k in angles:
-        angles[k] = sum(angles[k]) / len(angles[k])
+    avg_angles = {}
+    for k, v in angles.items():
+        avg_angles[k] = sum(v) / len(v)
 
     if plot:
         plt.imshow(im, cmap=cm.Greys_r)
@@ -149,21 +163,58 @@ def angle_feature(im, ub, lb, plot=False):
             plt.plot((p1y, p2y), (p1x, p2x), color='r')
         plt.show()
 
-    f9 = sum(angles.values()) / len(angles)
-    f10 = numpy.std(angles.values())
+    # usually there is an issue with word segmentation
+    if len(avg_angles) == 0:
+        f9, f10 = 0, 0
+    else:
+        f9 = sum(avg_angles.values()) / len(avg_angles)
+        f10 = numpy.std(avg_angles.values())
     return f9, f10
 
 
 def main():
-    img = Image.open('today.png')
-    img_outline = img.filter(ImageFilter.FIND_EDGES)
-    im = numpy.array(img) / 255
-    im_outline = numpy.array(img_outline) / 255
+    input_file = 'train_answers.csv'
+    labels = {}
+    with open(input_file, 'rb') as f_in:
+        reader = csv.DictReader(f_in, delimiter=',',
+                                quoting=csv.QUOTE_MINIMAL,
+                                fieldnames=['writer', 'male'])
+        for line in reader:
+            labels[line['writer']] = line['male']
+    bar = pbar(len(os.listdir('wordImages')))
+    count = 0
+    bar.start()
+    output_columns = ['file_name', 'label', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10']
+    with open('wordFeatures.csv', 'wb') as f_out:
+        writer = csv.DictWriter(f_out, delimiter=',',
+                                quoting=csv.QUOTE_MINIMAL,
+                                fieldnames=output_columns)
+        for file_name in os.listdir('wordImages'):
+            count += 1
+            bar.update(count)
+            if not file_name.endswith('.bmp'):
+                continue
+            img = Image.open('wordImages/%s' % file_name)
+            img = img.convert('L')
+            img_outline = img.filter(ImageFilter.FIND_EDGES)
+            im = numpy.array(img) / 255
+            im_outline = numpy.array(img_outline) / 255
 
-    ub, lb, f1, f2, f3, f4, f5, f6 = height_features(im, plot=False)
-    f7, f8 = width_feature(im, f2, plot=False)
-    f9, f10 = angle_feature(im_outline, ub, lb, plot=True)
-    print 'f1: %s\nf2: %s\nf3: %s\nf4: %s\nf5: %s\nf6: %s\nf7: %s\nf8: %s\nf9: %s\nf10: %s\n' % (f1, f2, f3, f4, f5, f6, f7, f8, f9, f10)
+            ub, lb, f1, f2, f3, f4, f5, f6 = height_features(im, plot=False)
+            f7, f8 = width_feature(im, f2, plot=False)
+            f9, f10 = angle_feature(im_outline, ub, lb, plot=False)
+
+            entry = {}
+            entry['file_name'], entry['label'] = file_name, labels[file_name.split('_')[0]]
+            entry['f1'], entry['f2'], entry['f3'], entry['f4'] = f1, f2, f3, f4
+            entry['f5'], entry['f6'], entry['f7'], entry['f8'] = f5, f6, f7, f8
+            entry['f9'], entry['f10'] = f9, f10
+            # format_string = 'f1: %s\nf2: %s\nf3: %s\nf4: %s\nf5: %s\nf6: %s\nf7: %s\nf8:%s\nf9: %s\nf10: %s\n'
+            # print format_string % (f1, f2, f3, f4, f5, f6, f7, f8, f9, f10)
+
+            writer.writerow(entry)
+            f_out.flush()
+    bar.finish()
 
 if __name__ == '__main__':
     main()
