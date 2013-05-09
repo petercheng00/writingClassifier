@@ -176,6 +176,20 @@ def reject_outliers(data, m=2):
     return data[abs(data - numpy.mean(data)) < m * numpy.std(data)]
 
 
+def roundrobin(*iterables):
+    "roundrobin('ABC', 'D', 'EF') --> A D E B F C"
+    # Recipe credited to George Sakkis
+    pending = len(iterables)
+    nexts = itertools.cycle(iter(it).next for it in iterables)
+    while pending:
+        try:
+            for next in nexts:
+                yield next()
+        except StopIteration:
+            pending -= 1
+            nexts = itertools.cycle(itertools.islice(nexts, pending))
+
+
 def main():
     input_file = 'train_answers.csv'
     labels = {}
@@ -189,12 +203,14 @@ def main():
     count = 0
     bar.start()
     output_columns = ['file_name', 'label', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10']
-    writer_nums = sorted(list(set([x.split('/')[1].split('_')[0] for x in glob.glob('wordImages/*')])))
+    # consistent ordering
+    males = sorted([x for x in sorted(labels.items()) if x[1] == '1'])
+    females = sorted([x for x in sorted(labels.items()) if x[1] == '0'])
     with open('wordFeaturesAveraged.csv', 'wb') as f_out:
         writer = csv.DictWriter(f_out, delimiter=',',
                                 quoting=csv.QUOTE_MINIMAL,
                                 fieldnames=output_columns)
-        for writer_num in writer_nums:
+        for writer_num, label in roundrobin(males, females):
             f1s, f2s, f3s, f4s, f5s, f6s, f7s, f8s, f9s, f10s = [], [], [], [], [], [], [], [], [], []
             for file_name in glob.glob('wordImages/%s_*' % writer_num):
                 count += 1
@@ -233,7 +249,7 @@ def main():
             f1, f2, f3, f4, f5, f6, f7, f8, f9, f10 = avg_features
 
             entry = {}
-            entry['file_name'], entry['label'] = writer_num, labels[writer_num]
+            entry['file_name'], entry['label'] = writer_num, label
             entry['f1'], entry['f2'], entry['f3'], entry['f4'] = f1, f2, f3, f4
             entry['f5'], entry['f6'], entry['f7'], entry['f8'] = f5, f6, f7, f8
             entry['f9'], entry['f10'] = f9, f10
