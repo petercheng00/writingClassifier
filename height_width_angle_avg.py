@@ -8,9 +8,9 @@ import operator
 from collections import defaultdict
 import pprint
 import math
-import glob
 import csv
 import progressbar
+import glob
 
 pr = pprint.PrettyPrinter(indent=2)
 
@@ -172,18 +172,8 @@ def angle_feature(im, ub, lb, plot=False):
     return f9, f10
 
 
-def roundrobin(*iterables):
-    "roundrobin('ABC', 'D', 'EF') --> A D E B F C"
-    # Recipe credited to George Sakkis
-    pending = len(iterables)
-    nexts = itertools.cycle(iter(it).next for it in iterables)
-    while pending:
-        try:
-            for next in nexts:
-                yield next()
-        except StopIteration:
-            pending -= 1
-            nexts = itertools.cycle(itertools.islice(nexts, pending))
+def reject_outliers(data, m=2):
+    return data[abs(data - numpy.mean(data)) < m * numpy.std(data)]
 
 
 def main():
@@ -199,14 +189,13 @@ def main():
     count = 0
     bar.start()
     output_columns = ['file_name', 'label', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10']
-    # consistent ordering
-    males = sorted([x for x in sorted(labels.items()) if x[1] == '1'])
-    females = sorted([x for x in sorted(labels.items()) if x[1] == '0'])
-    with open('wordFeatures.csv', 'wb') as f_out:
+    writer_nums = sorted(list(set([x.split('/')[1].split('_')[0] for x in glob.glob('wordImages/*')])))
+    with open('wordFeaturesAveraged.csv', 'wb') as f_out:
         writer = csv.DictWriter(f_out, delimiter=',',
                                 quoting=csv.QUOTE_MINIMAL,
                                 fieldnames=output_columns)
-        for writer_num, label in roundrobin(males, females):
+        for writer_num in writer_nums:
+            f1s, f2s, f3s, f4s, f5s, f6s, f7s, f8s, f9s, f10s = [], [], [], [], [], [], [], [], [], []
             for file_name in glob.glob('wordImages/%s_*' % writer_num):
                 count += 1
                 bar.update(count)
@@ -225,16 +214,34 @@ def main():
                 if f9 is None or f10 is None:
                     continue
 
-                entry = {}
-                entry['file_name'], entry['label'] = file_name, label
-                entry['f1'], entry['f2'], entry['f3'], entry['f4'] = f1, f2, f3, f4
-                entry['f5'], entry['f6'], entry['f7'], entry['f8'] = f5, f6, f7, f8
-                entry['f9'], entry['f10'] = f9, f10
-                # format_string = 'f1: %s\nf2: %s\nf3: %s\nf4: %s\nf5: %s\nf6: %s\nf7: %s\nf8:%s\nf9: %s\nf10: %s\n'
-                # print format_string % (f1, f2, f3, f4, f5, f6, f7, f8, f9, f10)
+                f1s.append(f1)
+                f2s.append(f2)
+                f3s.append(f3)
+                f4s.append(f4)
+                f5s.append(f5)
+                f6s.append(f6)
+                f7s.append(f7)
+                f8s.append(f8)
+                f9s.append(f9)
+                f10s.append(f10)
 
-                writer.writerow(entry)
-                f_out.flush()
+            # remove outliers
+            features = (f1s, f2s, f3s, f4s, f5s, f6s, f7s, f8s, f9s, f10s)
+            avg_features = []
+            for feat in features:
+                avg_features.append(numpy.average(reject_outliers(numpy.array(feat))))
+            f1, f2, f3, f4, f5, f6, f7, f8, f9, f10 = avg_features
+
+            entry = {}
+            entry['file_name'], entry['label'] = writer_num, labels[writer_num]
+            entry['f1'], entry['f2'], entry['f3'], entry['f4'] = f1, f2, f3, f4
+            entry['f5'], entry['f6'], entry['f7'], entry['f8'] = f5, f6, f7, f8
+            entry['f9'], entry['f10'] = f9, f10
+            # format_string = 'f1: %s\nf2: %s\nf3: %s\nf4: %s\nf5: %s\nf6: %s\nf7: %s\nf8:%s\nf9: %s\nf10: %s\n'
+            # print format_string % (f1, f2, f3, f4, f5, f6, f7, f8, f9, f10)
+
+            writer.writerow(entry)
+            f_out.flush()
     bar.finish()
 
 if __name__ == '__main__':
