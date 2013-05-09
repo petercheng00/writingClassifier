@@ -165,7 +165,7 @@ def angle_feature(im, ub, lb, plot=False):
 
     # usually there is an issue with word segmentation
     if len(avg_angles) == 0:
-        f9, f10 = 0, 0
+        f9, f10 = None, None
     else:
         f9 = sum(avg_angles.values()) / len(avg_angles)
         f10 = numpy.std(avg_angles.values())
@@ -203,6 +203,9 @@ def main():
             ub, lb, f1, f2, f3, f4, f5, f6 = height_features(im, plot=False)
             f7, f8 = width_feature(im, f2, plot=False)
             f9, f10 = angle_feature(im_outline, ub, lb, plot=False)
+
+            if f9 is None or f10 is None:
+                continue
 
             entry = {}
             entry['file_name'], entry['label'] = file_name, labels[file_name.split('_')[0]]
