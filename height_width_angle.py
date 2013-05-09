@@ -8,7 +8,7 @@ import operator
 from collections import defaultdict
 import pprint
 import math
-import os
+import glob
 import csv
 import progressbar
 
@@ -172,6 +172,20 @@ def angle_feature(im, ub, lb, plot=False):
     return f9, f10
 
 
+def roundrobin(*iterables):
+    "roundrobin('ABC', 'D', 'EF') --> A D E B F C"
+    # Recipe credited to George Sakkis
+    pending = len(iterables)
+    nexts = itertools.cycle(iter(it).next for it in iterables)
+    while pending:
+        try:
+            for next in nexts:
+                yield next()
+        except StopIteration:
+            pending -= 1
+            nexts = itertools.cycle(itertools.islice(nexts, pending))
+
+
 def main():
     input_file = 'train_answers.csv'
     labels = {}
@@ -181,42 +195,46 @@ def main():
                                 fieldnames=['writer', 'male'])
         for line in reader:
             labels[line['writer']] = line['male']
-    bar = pbar(len(os.listdir('wordImages')))
+    bar = pbar(len(glob.glob('wordImages/*')))
     count = 0
     bar.start()
     output_columns = ['file_name', 'label', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10']
+    # consistent ordering
+    males = sorted([x for x in sorted(labels.items()) if x[1] == '1'])
+    females = sorted([x for x in sorted(labels.items()) if x[1] == '0'])
     with open('wordFeatures.csv', 'wb') as f_out:
         writer = csv.DictWriter(f_out, delimiter=',',
                                 quoting=csv.QUOTE_MINIMAL,
                                 fieldnames=output_columns)
-        for file_name in os.listdir('wordImages'):
-            count += 1
-            bar.update(count)
-            if not file_name.endswith('.bmp'):
-                continue
-            img = Image.open('wordImages/%s' % file_name)
-            img = img.convert('L')
-            img_outline = img.filter(ImageFilter.FIND_EDGES)
-            im = numpy.array(img) / 255
-            im_outline = numpy.array(img_outline) / 255
+        for writer_num, label in roundrobin(males, females):
+            for file_name in glob.glob('wordImages/%s_*' % writer_num):
+                count += 1
+                bar.update(count)
+                if not file_name.endswith('.bmp'):
+                    continue
+                img = Image.open(file_name)
+                img = img.convert('L')
+                img_outline = img.filter(ImageFilter.FIND_EDGES)
+                im = numpy.array(img) / 255
+                im_outline = numpy.array(img_outline) / 255
 
-            ub, lb, f1, f2, f3, f4, f5, f6 = height_features(im, plot=False)
-            f7, f8 = width_feature(im, f2, plot=False)
-            f9, f10 = angle_feature(im_outline, ub, lb, plot=False)
+                ub, lb, f1, f2, f3, f4, f5, f6 = height_features(im, plot=False)
+                f7, f8 = width_feature(im, f2, plot=False)
+                f9, f10 = angle_feature(im_outline, ub, lb, plot=False)
 
-            if f9 is None or f10 is None:
-                continue
+                if f9 is None or f10 is None:
+                    continue
 
-            entry = {}
-            entry['file_name'], entry['label'] = file_name, labels[file_name.split('_')[0]]
-            entry['f1'], entry['f2'], entry['f3'], entry['f4'] = f1, f2, f3, f4
-            entry['f5'], entry['f6'], entry['f7'], entry['f8'] = f5, f6, f7, f8
-            entry['f9'], entry['f10'] = f9, f10
-            # format_string = 'f1: %s\nf2: %s\nf3: %s\nf4: %s\nf5: %s\nf6: %s\nf7: %s\nf8:%s\nf9: %s\nf10: %s\n'
-            # print format_string % (f1, f2, f3, f4, f5, f6, f7, f8, f9, f10)
+                entry = {}
+                entry['file_name'], entry['label'] = file_name, label
+                entry['f1'], entry['f2'], entry['f3'], entry['f4'] = f1, f2, f3, f4
+                entry['f5'], entry['f6'], entry['f7'], entry['f8'] = f5, f6, f7, f8
+                entry['f9'], entry['f10'] = f9, f10
+                # format_string = 'f1: %s\nf2: %s\nf3: %s\nf4: %s\nf5: %s\nf6: %s\nf7: %s\nf8:%s\nf9: %s\nf10: %s\n'
+                # print format_string % (f1, f2, f3, f4, f5, f6, f7, f8, f9, f10)
 
-            writer.writerow(entry)
-            f_out.flush()
+                writer.writerow(entry)
+                f_out.flush()
     bar.finish()
 
 if __name__ == '__main__':
