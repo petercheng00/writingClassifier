@@ -52,6 +52,9 @@ for k = 1:length(lines)
     if size(r) < 10000
         continue;
     end
+    if ((max(c)-min(c)+1)/(max(r)-min(r)+1)) < 8.5
+        continue;
+    end
     
     if CCtoTextLine(l) == 0    
         newIm = logical(zeros(size(im)));

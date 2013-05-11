@@ -20,7 +20,7 @@ for file = inFiles'
   if fileCounter > 282
       break;
   end
-  multiWaitbar('Processing Files', fileCounter/numFiles);
+  multiWaitbar('Processing Files', fileCounter/282);
   multiWaitbar('Processing Lines', 0);
   origIm = imread(strcat(inDir,file.name));
   [cropIm, cropDim] = preprocess(origIm);
@@ -34,9 +34,6 @@ for file = inFiles'
       lineAngles(end+1,:) = [fileId, lineInd, fileLineAngles(lineInd)];
   end
   fileCounter = fileCounter + 1;
-  if fileCounter > 10
-      break
-  end
 end
 csvwrite(strcat(outputDir,'/','lineAngles.csv'),lineAngles);
 multiWaitbar('CLOSEALL');

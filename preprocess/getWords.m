@@ -1,7 +1,7 @@
 function boxes = getWords( im )
 [height,width] = size(im);
 
-vis = true;
+vis = false;
 
 minWordLength = 0.02 * width;
 gapBetweenLetters = 0.7 * minWordLength;
