@@ -9,7 +9,7 @@ if ~exist(outputDir, 'dir')
 end
 
 inDir = strcat(inDir, '/');
-inFiles = dir(strcat(inDir,'*_4.bmp'));
+inFiles = dir(strcat(inDir,'*.bmp'));
 numFiles = size(inFiles,1);
 
 fileCounter = 1;
