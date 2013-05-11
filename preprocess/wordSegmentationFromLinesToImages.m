@@ -1,7 +1,7 @@
-function wordSegmentationToImages(inDir, outputDir)
+function wordSegmentationFromLinesToImages(inDir, outputDir)
 addpath('multiwaitbar');
 if nargin < 2
-    outputDir = 'wordImages';
+    outputDir = 'wordImagesFromLines';
 end
 
 if ~exist(outputDir, 'dir')
@@ -9,19 +9,23 @@ if ~exist(outputDir, 'dir')
 end
 
 inDir = strcat(inDir, '/');
-inFiles = dir(strcat(inDir,'*_4.jpg'));
+inFiles = dir(strcat(inDir,'*_4.bmp'));
 numFiles = size(inFiles,1);
 
 fileCounter = 1;
 multiWaitbar('CLOSEALL');
 for file = inFiles'
-  multiWaitbar('Processing Files', fileCounter/numFiles);
+  multiWaitbar('Processing Line Images', fileCounter/numFiles);
   multiWaitbar('Processing Words', 0);
-  origIm = imread(strcat(inDir,file.name));
-  [cropIm, cropDim] = preprocess(origIm);
-  boxes = getWords(cropIm);
+  
+  underscoreInd = find(file.name=='_');
+  currAuthorNum = file.name(1:underscoreInd-1);
+  currLineNum = file.name(underscoreInd+1:end-4);
 
-  fileId = str2double(file.name(1:end-6));
+  cropIm = imread(strcat(inDir,file.name));
+  boxes = getWords(cropIm);
+  
+  wordCounter = 1;
   for boxInd = 1:size(boxes,1)
       multiWaitbar('Processing Words', boxInd/size(boxes,1));
       [currBB,currAngle] = getAABB(boxes(boxInd));
@@ -31,8 +35,9 @@ for file = inFiles'
       wordIm = getRotatedBox(cropIm, currBB, currAngle);
       
       %write wordIm here
-      fileName = strcat(outputDir,'/',fileId,'_',boxInd,'.jpg');
-      imwrite(
+      fileName = strcat(outputDir,'/',currAuthorNum,'_',currLineNum,'_',num2str(wordCounter),'.bmp');
+      imwrite(wordIm, fileName);
+      wordCounter = wordCounter + 1;
   end
   fileCounter = fileCounter + 1;
 end

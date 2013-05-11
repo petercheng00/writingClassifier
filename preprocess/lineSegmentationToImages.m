@@ -34,6 +34,9 @@ for file = inFiles'
       lineAngles(end+1,:) = [fileId, lineInd, fileLineAngles(lineInd)];
   end
   fileCounter = fileCounter + 1;
+  if fileCounter > 10
+      break
+  end
 end
 csvwrite(strcat(outputDir,'/','lineAngles.csv'),lineAngles);
 multiWaitbar('CLOSEALL');

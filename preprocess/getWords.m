@@ -1,10 +1,11 @@
 function boxes = getWords( im )
 [height,width] = size(im);
 
-minWordLength = 0.02 * width;
-gapBetweenLetters = 0.6 * minWordLength;
+vis = true;
 
-%im = edge(im, 'canny');
+minWordLength = 0.02 * width;
+gapBetweenLetters = 0.7 * minWordLength;
+
 [H,T,R] = hough(im, 'RhoResolution',1,'Theta',[-90:-85,85:89]);
 P = houghpeaks(H,500,'threshold',ceil(0.3*max(H(:))));
 % Find lines and plot them
@@ -21,21 +22,26 @@ for k = 1:length(lines)
    maxX = max(x1,x2);
    x = linspace(minX,maxX,100*(maxX-minX));
    y = slope * x + yinter;
-   if (min(y) < 1)
-       keyboard
+   if vis
+       y = [y-1,y+1,y-2,y+2,y-3,y+3];
+       x = [x, x, x, x, x, x];
    end
+   y = min(y,height);
+   y = max(y,1);
    index = sub2ind(size(im),round(y),round(x));
    im(index) = 1;
 end
+if vis
+    imagesc(im)
+    pause
+end
+
 [labeled,numCC] = bwlabel(im);
 
 boxes = cell(numCC,1);
 validBoxes = false(numCC);
 
 for k = 1:numCC
-    %x = lines(k).point1(1);
-    %y = lines(k).point1(2);
-    %l = labeled(y,x);
     [r,c] = find(labeled == k);
     if size(r) < 500
         continue;
@@ -48,27 +54,9 @@ for k = 1:numCC
     currBox.p3 = minBB(:,3);
     currBox.p4 = minBB(:,4);
     
-    %currBox.minRow = min(r);
-    %currBox.maxRow = max(r);
-    %currBox.minCol = min(c);
-    %currBox.maxCol = max(c);
     boxes{k} = currBox;
-    %size(r)
-    %imagesc(im(min(r):max(r),min(c):max(c)));
-    %pause
 end
 boxes = boxes(validBoxes);
-%{
-figure, imshow(im), hold on
-for k = 1:length(lines)
-   xy = [lines(k).point1; lines(k).point2];
-   plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
-
-   % Plot beginnings and ends of lines
-   plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
-   plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
-end
-%}
 
 end
 
