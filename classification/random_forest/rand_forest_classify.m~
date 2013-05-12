@@ -1,0 +1,22 @@
+function rand_forest_classify( labels, features)
+    trainEndInd = 200;
+    
+    train_labels = labels(1:trainEndInd);
+    test_labels = labels(trainEndInd+1:end);
+    train_features = features(1:trainEndInd,:);
+    test_features = features(trainEndInd+1:end,:);
+    
+    tb = TreeBagger(10, train_features, train_labels, ...
+        'NPrint', 1, ...
+        'MinLeaf', 5);
+    
+    pred_labels = predict(tb, test_features);
+    pred_labels = str2double(pred_labels);
+    
+    correct = (pred_labels == test_labels);
+    
+    accuracy = sum(correct) / size(
+    keyboard
+
+end
+
