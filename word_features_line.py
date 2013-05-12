@@ -25,7 +25,7 @@ def pbar(size):
     return bar
 
 
-def height_features(im, plot=False):
+def height_feature(im, plot=False):
     '''
     input the file name of a preprocessed image file. should be a line of words
     grayscale and whitespace trimmed using peter's preprocess.
@@ -192,6 +192,8 @@ def roundrobin(*iterables):
 
 def main():
     input_file = 'train_answers.csv'
+    output_columns = ['writer', 'line', 'label', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10']
+
     labels = {}
     with open(input_file, 'rb') as f_in:
         reader = csv.DictReader(f_in, delimiter=',',
@@ -199,65 +201,49 @@ def main():
                                 fieldnames=['writer', 'male'])
         for line in reader:
             labels[line['writer']] = line['male']
-    bar = pbar(len(glob.glob('wordImages/*')))
-    count = 0
-    bar.start()
-    output_columns = ['file_name', 'label', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10']
-    # consistent ordering
+
+    # consistent alternating ordering via roundrobin()
     males = sorted([x for x in sorted(labels.items()) if x[1] == '1'])
     females = sorted([x for x in sorted(labels.items()) if x[1] == '0'])
-    with open('wordFeaturesAveraged.csv', 'wb') as f_out:
-        writer = csv.DictWriter(f_out, delimiter=',',
-                                quoting=csv.QUOTE_MINIMAL,
-                                fieldnames=output_columns)
+
+    bar = pbar(len(glob.glob('wordImagesFromLines/*')))
+    count = 0
+    bar.start()
+    with open('wordFeaturesLine.csv', 'wb') as f_out:
+        writer = csv.DictWriter(f_out, delimiter=',', fieldnames=output_columns)
         for writer_num, label in roundrobin(males, females):
-            f1s, f2s, f3s, f4s, f5s, f6s, f7s, f8s, f9s, f10s = [], [], [], [], [], [], [], [], [], []
-            for file_name in glob.glob('wordImages/%s_*' % writer_num):
-                count += 1
-                bar.update(count)
-                if not file_name.endswith('.bmp'):
-                    continue
-                img = Image.open(file_name)
-                img = img.convert('L')
-                img_outline = img.filter(ImageFilter.FIND_EDGES)
-                im = numpy.array(img) / 255
-                im_outline = numpy.array(img_outline) / 255
+            line_nums = list(set([x.split('/')[1].split('_')[1] for x in glob.glob('wordImagesFromLines/%s_*' % writer_num)]))
+            for line_num in line_nums:
+                features = []
+                for file_name in glob.glob('wordImagesFromLines/%s_%s_*.bmp' % (writer_num, line_num)):
+                    count += 1
+                    bar.update(count)
 
-                ub, lb, f1, f2, f3, f4, f5, f6 = height_features(im, plot=False)
-                f7, f8 = width_feature(im, f2, plot=False)
-                f9, f10 = angle_feature(im_outline, ub, lb, plot=False)
+                    img = Image.open(file_name).convert('L')
+                    img_outline = img.filter(ImageFilter.FIND_EDGES)
+                    im = numpy.array(img) / 255
+                    im_outline = numpy.array(img_outline) / 255
+                    ub, lb, f1, f2, f3, f4, f5, f6 = height_feature(im, plot=False)
+                    f7, f8 = width_feature(im, f2, plot=False)
+                    f9, f10 = angle_feature(im_outline, ub, lb, plot=False)
+                    if f9 is None or f10 is None:
+                        continue
+                    features.append((f1, f2, f3, f4, f5, f6, f7, f8, f9, f10))
 
-                if f9 is None or f10 is None:
-                    continue
+                # average and remove outliers
+                features = zip(*features)
+                avg_features = []
+                for feat in features:
+                    avg_features.append(numpy.average(reject_outliers(numpy.array(feat))))
+                f1, f2, f3, f4, f5, f6, f7, f8, f9, f10 = avg_features
 
-                f1s.append(f1)
-                f2s.append(f2)
-                f3s.append(f3)
-                f4s.append(f4)
-                f5s.append(f5)
-                f6s.append(f6)
-                f7s.append(f7)
-                f8s.append(f8)
-                f9s.append(f9)
-                f10s.append(f10)
+                entry = {}
+                entry['writer'], entry['line'], entry['label'] = writer_num, line_num, label
+                entry['f1'], entry['f2'], entry['f3'], entry['f4'], entry['f5'], entry[
+                    'f6'], entry['f7'], entry['f8'], entry['f9'], entry['f10'] = avg_features
 
-            # remove outliers
-            features = (f1s, f2s, f3s, f4s, f5s, f6s, f7s, f8s, f9s, f10s)
-            avg_features = []
-            for feat in features:
-                avg_features.append(numpy.average(reject_outliers(numpy.array(feat))))
-            f1, f2, f3, f4, f5, f6, f7, f8, f9, f10 = avg_features
-
-            entry = {}
-            entry['file_name'], entry['label'] = writer_num, label
-            entry['f1'], entry['f2'], entry['f3'], entry['f4'] = f1, f2, f3, f4
-            entry['f5'], entry['f6'], entry['f7'], entry['f8'] = f5, f6, f7, f8
-            entry['f9'], entry['f10'] = f9, f10
-            # format_string = 'f1: %s\nf2: %s\nf3: %s\nf4: %s\nf5: %s\nf6: %s\nf7: %s\nf8:%s\nf9: %s\nf10: %s\n'
-            # print format_string % (f1, f2, f3, f4, f5, f6, f7, f8, f9, f10)
-
-            writer.writerow(entry)
-            f_out.flush()
+                writer.writerow(entry)
+                f_out.flush()
     bar.finish()
 
 if __name__ == '__main__':
