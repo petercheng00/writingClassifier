@@ -3,9 +3,9 @@ function rand_forest_classify( labels, features, trainEndInd)
         trainEndInd = round(0.75 * size(labels,1));
     end
     
-    numTrees = 100;
+    numTrees = 500;
     resamplePct = 0.5;
-    varsToSample = 5;
+    varsToSample = size(features,2)/2;
     minLeafSize = 10;
     
     train_labels = labels(1:trainEndInd);
