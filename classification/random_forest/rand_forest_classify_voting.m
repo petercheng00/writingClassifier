@@ -5,9 +5,9 @@ function rand_forest_classify_voting( labels, features, voteMapping, trainEndInd
     end
     
 
-    numTrees = 500;
+    numTrees = 200;
     resamplePct = 0.5;
-    varsToSample = 5;
+    varsToSample = size(features,2)/2;
     minLeafSize = 10;
     
     train_labels = labels(1:trainEndInd);
