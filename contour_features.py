@@ -126,7 +126,7 @@ def roundrobin(*iterables):
 
 
 def main():
-    output_columns = ['writer', 'line', 'label', 'f12', 'f13', 'f14', 'f15', 'f16',
+    output_columns = ['writer', 'line', 'f12', 'f13', 'f14', 'f15', 'f16',
                       'f17', 'f18', 'f19', 'f20', 'f21', 'f22', 'f23', 'f24', 'f25', 'f26', 'f27']
     labels = {}
     with open('train_answers.csv', 'rb') as f_in:
@@ -150,7 +150,7 @@ def main():
     bar = pbar(len(glob.glob('lineImages/*')))
     count = 0
     bar.start()
-    with open('lineFeatures.csv', 'wb') as f_out:
+    with open('contourFeatures.csv', 'wb') as f_out:
         writer = csv.DictWriter(f_out, delimiter=',', fieldnames=output_columns)
         for writer_num, label in roundrobin(males, females):
             for file_name in glob.glob('lineImages/%s_*.bmp' % writer_num):
@@ -164,7 +164,7 @@ def main():
                 features = countour_feature(im, plot=False)
 
                 entry = {}
-                entry['writer'], entry['line'], entry['label'] = writer_num, line_num, label
+                entry['writer'], entry['line'] = writer_num, line_num
                 feat_names = [x for x in output_columns if x.startswith('f')]
                 for i in range(len(feat_names)):
                     entry[feat_names[i]] = features[i]

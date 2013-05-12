@@ -192,7 +192,7 @@ def roundrobin(*iterables):
 
 def main():
     input_file = 'train_answers.csv'
-    output_columns = ['writer', 'line', 'label', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10']
+    output_columns = ['writer', 'line', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10']
 
     labels = {}
     with open(input_file, 'rb') as f_in:
@@ -238,7 +238,7 @@ def main():
                 f1, f2, f3, f4, f5, f6, f7, f8, f9, f10 = avg_features
 
                 entry = {}
-                entry['writer'], entry['line'], entry['label'] = writer_num, line_num, label
+                entry['writer'], entry['line'] = writer_num, line_num
                 entry['f1'], entry['f2'], entry['f3'], entry['f4'], entry['f5'], entry[
                     'f6'], entry['f7'], entry['f8'], entry['f9'], entry['f10'] = avg_features
 
