@@ -45,7 +45,8 @@ def main():
     contour_feature = extract_features('contourFeatures.csv')
     cc_feature = extract_features('ccFeatures.csv')
     er_feature = extract_features('erFeatures.csv')
-    all_features = [word_feature, line_angle_feature, contour_feature, cc_feature, er_feature]
+    fractal_feature = extract_features('fractalFeatures.csv')
+    all_features = [word_feature, line_angle_feature, contour_feature, cc_feature, er_feature, fractal_feature]
 
     with open('allFeatures.csv', 'wb') as f_out:
         csv_writer = csv.writer(f_out, delimiter=',', quoting=csv.QUOTE_MINIMAL)
@@ -59,7 +60,8 @@ def main():
                 contour = contour_feature[writer_num][line_num]
                 cc = cc_feature[writer_num][line_num]
                 er = er_feature[writer_num][line_num]
-                csv_writer.writerow([writer_num, label] + word + angle + contour+cc+er)
+                fractal = fractal_feature[writer_num][line_num]
+                csv_writer.writerow([writer_num, label] + word + angle + contour + cc + er + fractal)
 
 if __name__ == '__main__':
     main()
