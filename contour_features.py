@@ -24,7 +24,8 @@ def pbar(size):
 
 
 def characteristic_contour(contour):
-    one_indices = [x[0] for x in sorted(zip(*numpy.where(contour == 1)), key=itemgetter(1))]
+    one_indices = [x[0] for x in sorted(zip(
+        *numpy.where(contour == 1)), key=itemgetter(1))]
     char_one_indices = []
     index = one_indices[0]
     last_index = one_indices[0]
@@ -37,7 +38,8 @@ def characteristic_contour(contour):
         last_index = i
     smallest = min(char_one_indices)
     char_one_indices = [x - smallest for x in char_one_indices]
-    char_contour = numpy.zeros((max(char_one_indices) + 1, contour.shape[1]), dtype=int)
+    char_contour = numpy.zeros((max(
+        char_one_indices) + 1, contour.shape[1]), dtype=int)
     for i in range(len(char_one_indices)):
         char_contour[char_one_indices[i], i] = 1
     return char_contour
@@ -58,7 +60,8 @@ def avg_slopes(local_extrema, y, n=3):
 
 def extract_contour_features(char_contour):
     x = numpy.array(range(char_contour.shape[1]))
-    y = numpy.array([point[0] for point in sorted(zip(*numpy.where(char_contour == 1)), key=itemgetter(1))])
+    y = numpy.array([point[0] for point in sorted(zip(
+        *numpy.where(char_contour == 1)), key=itemgetter(1))])
     slope, intercept = numpy.polyfit(x, y, 1)
     y_pred = numpy.polyval([slope, intercept], x)
     mean_sq_error = numpy.sum((y_pred - y)**2) / len(x)
@@ -80,7 +83,7 @@ def extract_contour_features(char_contour):
     return slope, mean_sq_error, max_freq, min_freq, left_slope_max, right_slope_max, left_slope_min, right_slope_min
 
 
-def countour_feature(im, plot=False):
+def contour_feature(im, plot=False):
     lower_contour = []
     upper_contour = []
     for i in range(im.shape[1]):
@@ -98,11 +101,13 @@ def countour_feature(im, plot=False):
     char_lower_contour = characteristic_contour(lower_contour)
     char_upper_contour = characteristic_contour(upper_contour)
 
-    f12, f13, f14, f15, f16, f17, f18, f19 = extract_contour_features(char_lower_contour)
-    f20, f21, f22, f23, f24, f25, f26, f27 = extract_contour_features(char_upper_contour)
+    f12, f13, f14, f15, f16, f17, f18, f19 = extract_contour_features(
+        char_lower_contour)
+    f20, f21, f22, f23, f24, f25, f26, f27 = extract_contour_features(
+        char_upper_contour)
 
     if plot:
-        f, (ax1, ax2, ax3) = plt.subplots(3, sharey=True)
+        f, (ax1, ax2, ax3) = plt.subplots(3)
         ax1.imshow(im, cmap=cm.Greys_r)
         ax2.imshow(lower_contour, cmap=cm.Greys_r)
         ax3.imshow(char_lower_contour, cmap=cm.Greys_r)
@@ -151,7 +156,8 @@ def main():
     count = 0
     bar.start()
     with open('contourFeatures.csv', 'wb') as f_out:
-        writer = csv.DictWriter(f_out, delimiter=',', fieldnames=output_columns)
+        writer = csv.DictWriter(
+            f_out, delimiter=',', fieldnames=output_columns)
         for writer_num, label in roundrobin(males, females):
             for file_name in glob.glob('lineImages/%s_*.bmp' % writer_num):
                 line_num = file_name.split('/')[1].split('.')[0].split('_')[1]
@@ -161,7 +167,10 @@ def main():
 
                 img = Image.open(file_name).rotate(angle).convert('L')
                 im = numpy.array(img) / 255
-                features = countour_feature(im, plot=False)
+                if count % 17 == 0:
+                    features = contour_feature(im, plot=True)
+                else:
+                    features = contour_feature(im, plot=False)
 
                 entry = {}
                 entry['writer'], entry['line'] = writer_num, line_num

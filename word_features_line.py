@@ -53,8 +53,9 @@ def height_feature(im, plot=False):
 
     if plot:
         plt.imshow(im, cmap=cm.Greys_r)
-        plt.hlines(numpy.array([ub_row, lb_row]), 0, im.shape[1], colors='g')
-        plt.hlines(numpy.array([float(ub_row + lb_row) / 2]), 0, im.shape[1], colors='y')
+        plt.hlines(numpy.array([ub_row, lb_row]), 0, im.shape[1], linewidth=3, colors='y')
+        plt.hlines(numpy.array([float(
+            ub_row + lb_row) / 2]), 0, im.shape[1], linewidth=3, colors='y')
         plt.show()
 
     f1 = ub_row
@@ -93,7 +94,7 @@ def width_feature(im, f2, plot=False):
     if plot:
         print gap_lengths
         plt.imshow(im, cmap=cm.Greys_r)
-        plt.hlines(numpy.array([max_line]), 0, im.shape[1], colors='g')
+        plt.hlines(numpy.array([max_line]), 0, im.shape[1], linewidth=3, colors='y')
         plt.show()
 
     f7 = numpy.median(gap_lengths)
@@ -152,10 +153,11 @@ def angle_feature(im, ub, lb, plot=False):
 
     if plot:
         plt.imshow(im, cmap=cm.Greys_r)
-        plt.hlines(numpy.array([ub, lb]), 0, im.shape[1], colors='y')
-        plt.hlines(numpy.array([float(ub + lb) / 2]), 0, im.shape[1], colors='y')
+        plt.hlines(numpy.array([ub, lb]), 0, im.shape[1], linewidth=3, colors='y')
+        plt.hlines(numpy.array([float(
+            ub + lb) / 2]), 0, im.shape[1], linewidth=3, colors='y')
         plt.autoscale(False)
-        for (mid_y, x), deg in angles.items():
+        for (mid_y, x), deg in avg_angles.items():
             x_zero = get_x(0, deg, x, mid_y)
             x_max = get_x(im.shape[0], deg, x, mid_y)
             plt.plot((x_zero, x_max), (0, im.shape[0]), color='b')
@@ -192,7 +194,8 @@ def roundrobin(*iterables):
 
 def main():
     input_file = 'train_answers.csv'
-    output_columns = ['writer', 'line', 'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10']
+    output_columns = ['writer', 'line', 'f1', 'f2',
+                      'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10']
 
     labels = {}
     with open(input_file, 'rb') as f_in:
@@ -210,9 +213,11 @@ def main():
     count = 0
     bar.start()
     with open('wordFeaturesLine.csv', 'wb') as f_out:
-        writer = csv.DictWriter(f_out, delimiter=',', fieldnames=output_columns)
+        writer = csv.DictWriter(
+            f_out, delimiter=',', fieldnames=output_columns)
         for writer_num, label in roundrobin(males, females):
-            line_nums = list(set([x.split('/')[1].split('_')[1] for x in glob.glob('wordImagesFromLines/%s_*' % writer_num)]))
+            line_nums = list(set([x.split('/')[1].split('_')[
+                             1] for x in glob.glob('wordImagesFromLines/%s_*' % writer_num)]))
             for line_num in line_nums:
                 features = []
                 for file_name in glob.glob('wordImagesFromLines/%s_%s_*.bmp' % (writer_num, line_num)):
@@ -223,7 +228,8 @@ def main():
                     img_outline = img.filter(ImageFilter.FIND_EDGES)
                     im = numpy.array(img) / 255
                     im_outline = numpy.array(img_outline) / 255
-                    ub, lb, f1, f2, f3, f4, f5, f6 = height_feature(im, plot=False)
+                    ub, lb, f1, f2, f3, f4, f5, f6 = height_feature(
+                        im, plot=False)
                     f7, f8 = width_feature(im, f2, plot=False)
                     f9, f10 = angle_feature(im_outline, ub, lb, plot=False)
                     if f9 is None or f10 is None:
@@ -234,7 +240,8 @@ def main():
                 features = zip(*features)
                 avg_features = []
                 for feat in features:
-                    avg_features.append(numpy.average(reject_outliers(numpy.array(feat))))
+                    avg_features.append(numpy.average(
+                        reject_outliers(numpy.array(feat))))
                 f1, f2, f3, f4, f5, f6, f7, f8, f9, f10 = avg_features
 
                 entry = {}
