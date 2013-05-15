@@ -1,0 +1,42 @@
+\begin{thebibliography}{1}
+
+\bibitem{kaggle}
+``Icdar2013 - gender prediction from handwriting.''
+  \url{http://www.kaggle.com/c/icdar2013-gender-prediction-from-handwriting}.
+
+\bibitem{Preprocessing}
+T.~Caesar, J.~Gloger, and E.~Mandler, ``Preprocessing and feature extraction
+  for a handwriting recognition system,'' in {\em IEEE 1993},  1993.
+
+\bibitem{ThresholdSelection}
+N.~Otsu, ``A threshold selection method from gray-level histograms,'' {\em
+  Systems, Man and Cybernetics, IEEE Transactions on}~{\bf 9}(1), pp.~62--66,
+  1979.
+
+\bibitem{BlockBased}
+G.~Louloudis, B.~Gatos, I.~Pratikakis, and K.~Halatsis, ``A block-based hough
+  transform mapping for text line detection in handwritten documents.''
+
+\bibitem{WriterID}
+U.-V. Marti, R.~Messerli, and H.~Bunke, ``Writer identification using text line
+  based features,'' in {\em Document Analysis and Recognition, 2001.
+  Proceedings. Sixth International Conference on},  pp.~101--105, 2001.
+
+\bibitem{SyntheticParameters}
+V.~Bouletreau, Vincent, R.~N., Sabourin, and H.~Emptoz, ``Parameters for
+  handwriting classification,'' in {\em IEEE 1997},  1997.
+
+\bibitem{NovelFeatures}
+C.~Hertel and H.~Bunke, ``A set of novel features for writer identification,''
+  in {\em AVBPA},  2003.
+
+\bibitem{FractalDimensions}
+N.~Vincent, V.~Bouletreau, H.~Emptoz, and R.~Sabourin, ``How to use fractal
+  dimensions to qualify writings and writers,'' in {\em Fractals},  2000.
+
+\bibitem{GeometricalFeatures}
+A.~Hassaine, A.~Somaya, and A.~Bouridane, ``A set of geometrical features for
+  writer identification, neural information processing,'' in {\em Neural
+  Information Processing},  2012.
+
+\end{thebibliography}

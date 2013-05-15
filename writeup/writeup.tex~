@@ -1,0 +1,318 @@
+% Short Sectioned Assignment
+% LaTeX Template
+% Version 1.0 (5/5/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+
+
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{float}
+
+\usepackage{multicol}
+\usepackage{mdwlist}
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{UC Berkeley, Computer Science} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Gender Classification of Handwritten Text \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Peter Cheng, Jeff Tsui, Alice Wang} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+\section{Introduction}
+For our project we designed and tested an off-line classifier for
+gender prediction, using handwritten text. The inspiration for this
+project came from a Kaggle machine learning competition
+\cite{kaggle}. Kaggle provides sample training data, in the form of
+high-resolution (300 dpi) jpg images. Each image corresponds to a
+writing sample, and there are 4 writing samples for each of 475
+writers. The 4 samples correspond to:
+
+\begin{enumerate}
+\item Arabic text, different text for each writer
+\item Arabic text, same text for each writer
+\item English text, different text for each writer
+\item English text, same text for each writer
+\end{enumerate}
+
+Section \ref{sec:background} provides some details that lead to
+preprocessing and feature extraction. Section \ref{sec:pands} details
+the preprocessing tasks we performed on the Kaggle jpg images
+provided. Section \ref{sec:feature} describes in detail the
+methodology behind feature extraction of the processed images. Section
+\ref{sec:results} demonstrates the performance of our extracted features
+using various canonical classifiers.
+
+\section{Background}
+\label{sec:background}
+For this particular contest, Kaggle provided 700+ extracted features
+for each writing sample. Upon examining relevant literature, we
+concluded that generating relevant features is as important, if not
+more so than honing the optimal classification model. We diverged our
+project to focus on our own feature extraction. In order to do so on
+the highly unconstrained Kaggle dataset, we will perform a number of
+preprocessing steps.
+
+The data we used consists of only the fourth sample for each writer,
+which is the same English text written by each writer. Since the data
+supplied is for a competition, the test data did not have gender
+labels. We decided to limit our dataset to the labeled training data,
+where label = 1 for male and label = 0 for female. Of these 282
+writing samples, we reserved
+25\% to be our own testing set. An example of a sample document image is shown in Figure \ref{fig:docImage}
+
+\begin{figure}
+\label{fig:docImage}
+\caption{A sample input document image}
+\end{figure}
+
+We started with trying to classify our dataset with each character’s
+appearance via Optical Character Recognition, and quickly concluded
+that it introduced more error and uncertainty than necessary. Instead,
+we perform a number of preprocessing and segmentation steps described
+in the next section. In this paper we refer to document image and word
+image, or line image, where each is an image containing a single
+document, word, or line respectively separately. Using the processed
+images, we generate a set of 56 features for each line. Then we
+calculate error rates from building several classification models, and
+summarize the results below.
+
+\section{Preprocessing and Segmentation}
+\label{sec:pands}
+Typically, when performing handwriting classification and feature
+extraction, binary images with a number of constraints are
+assumed. Typical constraints seen in previous work include having
+images in black and white, text all equally scaled among different
+writers, and lines written at consistent angles
+\cite{Preprocessing}. Furthermore, many feature extraction approaches
+are tuned to work on images of individual characters, words, or lines,
+instead of an entire document altogether. As a result, before
+extracting features, we perform a series of preprocessing steps, to
+normalize each document image \footnote{in this paper we refer to
+document image, word image, or line image, where each is an image
+containing a single document, word, or line respectively.}, followed
+by segmentation procedures to segment out lines and words.
+
+\subsection{Preprocessing}
+The first step in preprocessing is to translate each input color image
+into a binary black and white image. To accomplish this, an intensity
+threshold is calculated, such that pixels with intensity above that
+value are set to 1, while the rest are set to 0. This intensity
+threshold is calculated using Matlab’s “graythresh” function, which
+performs Otsu’s method for binary thresholding
+\cite{ThresholdSelection}. Following this binarization, we then trim
+off the margins of each image, as writing samples are centered around
+different locations on the page. This is done simply by retaining the
+image within the minimum axis-aligned bounding box containing all text
+in the image.
+
+\subsection{Segmentation}
+While features that are calculated on handwriting samples could
+theoretically be extracted from entire document images all at once,
+many of the features we use are specific to words or lines, so it
+makes sense to first break down the input space into line images and
+word images, so as to potentially reduce error when extracting these
+features.
+
+\subsubsection{Line Segmentation}
+
+\begin{figure}
+  \label{fig:houghLineDetect}
+  \caption{Line segments detected on a document image roughly
+    correspond to a line of text}
+\end{figure}
+
+To perform line segmentation, the Hough-transform-based algorithm
+proposed by Louloudis, G., et al, \cite{BlockBased} is loosely
+followed. First, we use Matlab’s probabilistic Hough line segment
+detector (HoughlinesP) implementation to detect lines on the document
+images, preprocessed after the previous section. We restrict Hough
+peak detection to only occur in the angle domain such that detected
+lines deviate at most 5 degrees from horizontal. We bin angles at a
+resolution of 1 degree, and the rho parameter at a resolution of 1
+pixel. The parameters for minimum line length and maximum gap within a
+line are more important, and are set to be 75\% of the image’s width
+and 10\% of the image’s width. An example of such detected lines is
+shown in Figure \ref{fig:houghLineDetect}. Each detected line is then
+drawn onto the word image, such that pixel values corresponding to the
+line are set to 1. Now, connected components are detected on the image
+with lines added, and if accurate lines were detected, each character
+and word in a line of text should all be in one contiguous connected
+component, held together by the lines drawn over them. Connected
+components with fewer than 10000 pixels are filtered out, as are those
+with a width less than 8 times the height, as the former case
+corresponds to punctuation or characters that were not properly
+grouped, while the latter case corresponds to cases where multiple
+lines of text were detected together. Each connected component,
+(without the detected lines), is now output at as a separate line
+image.
+
+\subsubsection{Word Segmentation}
+The word segmentation procedure we use is similar to the line
+segmentation method described in the previous section. Essentially,
+smaller lines are detected within each line image, such that
+individual words become the connected components. For this application
+we use the same angle and offset thresholds and resolutions as before,
+but set the minimum line length to be
+2\% of the line image’s width, while the maximum gap in a line is 1.5% of the line image’s width. After after filtering out connected components with fewer than 500 pixels, we can then extract word images via the connected components.
+
+However when extracting features from words, it is useful to have
+words that are rotated such that their baseline is horizontal. There
+are a number of approaches to accomplish this [2], though we take a
+fairly simple approach. For each word, we compute its (rotated)
+bounding box, and rotate the image such that the bounding box is axis
+aligned. This tends to work well for a high percentage of words,
+though in certain cases it does not perform well, as described in
+Figure A. In this case the lines are written very closely together and
+there is a slight angle to each line; the first line dips in the
+center slightly and the second line slants downwards. These factors
+make it difficult to perform line segmentation and in the example
+below, we are unable to correctly separate the two lines.  figure A
+
+
+\section{Feature Extraction}
+\label{sec:feature}
+In this section, we describe the features recovered from line images
+and word images, after preprocessing and segmentation, as described in
+the previous two sections. A listing of each feature is shown in Figure \ref{fig:featureList}
+
+\begin{figure}
+\label{fig:featureList}
+\begin{multicols}{3}
+\begin{enumerate*}
+\item upper baseline - topline 				
+\item lower baseline - upper baseline 			
+\item bottom line - lowerbaseline 			
+\item f1 / f2 							
+\item f1 / f3 							
+\item f2 / f3 							
+\item median of the gap lengths 				
+\item f2 / f7 							
+\item average of slant angles (degrees) 			
+\item std dev of slant angles (degrees) 			
+\item line angle 						
+\item slant of lower contour				
+\item mean sq error of lower contour			
+\item freq of local max for lower contour			
+\item freq of local min for lower contour			
+\item avg left slope of local max for lower contour	
+\item avg right slope of local max  for lower contour	
+\item avg left slope of local min for lower contour	
+\item avg right slope of local min for lower contour  	
+\item 12 for upper contour					
+\item 13 for upper contour					
+\item 14 for upper contour					
+\item 15 for upper contour					
+\item 16 for upper contour					
+\item 17 for upper contour					
+\item 18 for upper contour					
+\item 19 for upper contour					
+\item avg width of connected components		
+\item avg height of connected components		
+\item std dev of width of ccs				
+\item std dev of height of ccs				
+\item avg dist between adjacent ccs			
+\item std dev of dist between adjacent ccs		
+\item avg area of enclosed regions			
+\item avg length of major axis of ers			
+\item avg length of minor axis of ers			
+\item avg orientation of ers					
+\item avg eccentricity of ers				
+\item avg equiv diameter squared of ers			
+\item avg extent of ers					
+\item avg perimeter of ers					
+\item avg form factor of ers				
+\item avg roundness of ers					
+\item std dev of 34						
+\item .							
+\item .							
+\item .							
+\item .							
+\item .							
+\item .							
+\item .							
+\item .							
+\item std dev of 43						
+\item fractal slope 1						
+\item fractal slope 2						
+\item fractal slope 3	
+\end{enumerate*}
+\end{multicols}
+\end{figure}
+
+\subsection{Word Features}
+The first group of features are generated based on word images,
+referencing the work of Marti, U.-V., et al \cite{WriterID} where a
+feature vector is extracted from each word. These feature vectors are
+averaged by line to combine them with line-specific feature
+vectors. The word features include the width, slant, and height of the
+three main writing zones.
+
+\subsubsection{Word Height}
+\subsubsection{Word Width}
+\subsubsection{Word Slant}
+\subsection{Line Features}
+\subsubsection{Line Angle}
+\subsubsection{Contour}
+\subsubsection{Connected Components and Enclosed Regions}
+\subsubsection{Fractal Dimensions}
+\section{Results}
+\label{sec:results}
+\section{Conclusion}
+
+
+\bibliography{report} %>>>> bibliography data in report.bib
+\bibliographystyle{spiebib} %>>>> makes bibtex use spiebib.bst
+
+\end{document}

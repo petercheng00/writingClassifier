@@ -1,0 +1,19 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}
+\BOOKMARK [1][-]{section.2}{Background}{}
+\BOOKMARK [1][-]{section.3}{Preprocessing and Segmentation}{}
+\BOOKMARK [2][-]{subsection.3.1}{Preprocessing}{section.3}
+\BOOKMARK [2][-]{subsection.3.2}{Segmentation}{section.3}
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Line Segmentation}{subsection.3.2}
+\BOOKMARK [3][-]{subsubsection.3.2.2}{Word Segmentation}{subsection.3.2}
+\BOOKMARK [1][-]{section.4}{Feature Extraction}{}
+\BOOKMARK [2][-]{subsection.4.1}{Word Features}{section.4}
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Word Height}{subsection.4.1}
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Word Width}{subsection.4.1}
+\BOOKMARK [3][-]{subsubsection.4.1.3}{Word Slant}{subsection.4.1}
+\BOOKMARK [2][-]{subsection.4.2}{Line Features}{section.4}
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Line Angle}{subsection.4.2}
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Contour}{subsection.4.2}
+\BOOKMARK [3][-]{subsubsection.4.2.3}{Connected Components and Enclosed Regions}{subsection.4.2}
+\BOOKMARK [3][-]{subsubsection.4.2.4}{Fractal Dimensions}{subsection.4.2}
+\BOOKMARK [1][-]{section.5}{Results}{}
+\BOOKMARK [1][-]{section.6}{Conclusion}{}

@@ -1,0 +1,45 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: writeup.aux
+The style file: spiebib.bst
+Database file #1: report.bib
+You've used 9 entries,
+            1971 wiz_defined-function locations,
+            544 strings with 5049 characters,
+and the built_in function-call counts, 1797 in all, are:
+= -- 132
+> -- 88
+< -- 0
++ -- 33
+- -- 24
+* -- 142
+:= -- 251
+add.period$ -- 8
+call.type$ -- 9
+change.case$ -- 9
+chr.to.int$ -- 0
+cite$ -- 9
+duplicate$ -- 96
+empty$ -- 221
+format.name$ -- 24
+if$ -- 440
+int.to.chr$ -- 0
+int.to.str$ -- 9
+missing$ -- 7
+newline$ -- 30
+num.names$ -- 8
+pop$ -- 53
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 45
+stack$ -- 0
+substring$ -- 48
+swap$ -- 22
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 12
+width$ -- 10
+write$ -- 66

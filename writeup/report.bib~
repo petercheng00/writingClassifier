@@ -1,0 +1,39 @@
+@misc{kaggle,
+  title={ICDAR2013 - Gender Prediction from Handwriting},
+  howpublished={\url{http://www.kaggle.com/c/icdar2013-gender-prediction-from-handwriting}}
+}
+
+@inproceedings{SyntheticParameters,
+title={Synthetic Para
+@inproceedings{geometricFeatures,
+title={A Set of Geometrical Features for Writer Identification. Neural Information Processing},
+author={Hassaïne, A., Al-Maadeed, S. and Bouridane, A.},
+booktitle={Neural Information Processing},
+year={2012}
+}
+
+@inproceedings{SyntheticParameters,
+title={Parameters for Handwriting Classification},
+author={Bouletreau, V., Vincent, N., Sabourin, R., Emptoz, H.},
+booktitle={IEEE 1997},
+year={1997}
+}
+[1] Bouletreau, V., Vincent, N., Sabourin, R., Emptoz, H. “Synthetic Parameters for Handwriting Classification”. IEEE 1997, 0-8186-7898-4/97.
+
+[2] Caesar, T., Gloger, J.M., and Mandler, E. “Preprocessing and Feature Extraction for a Handwriting Recognition System”. IEEE 1993. 0-8186-4960-7/93.
+
+[3] Hassaine, A., Somaya, A.M., and Bouridane, A., “A set of geometrical features for writer identification, neural information processing,” in [Neural Information Processing], (2012). 
+
+[4] Hertel, C. and Bunke, Horst. “A Set of Novel Features for Writer Identification”. J. Kittler and M.S. Nixon (Eds): AVBPA 2003, LNCS 2688, pp. 679-687, 2003. 
+
+[5] http://www.kaggle.com/c/icdar2013-gender-prediction-from-handwriting
+
+[6] Louloudis, G., Gatos, B., Pratikakis, I., Halatsis, K. “A Block-Based Hough Transform Mapping for Text Line Detection in Handwritten Documents”. Department of Informatics and Telecommunications, University of Athens, Greece; Computational Intelligence Laboratory, Institute of Informatics and Telecommunications, National Center for Scientific Research “Demokritos”, GR-153, Athens, Greece.
+
+[7] Marti, U.-V. and Bunke, H. “Handwritten Sentence Recognition”. Pattern Recognition, 2000. Proceedings: 15th International Conference on Pattern Recognition. ICPR-2000, Volume 3. 
+
+[8] Marti, U.-V., Messerli, R., and Bunke, H. “Writer Identification using Text Line Based Features”. Document Analysis and Recognition, 2011. Proceedings: Sixth Annual Conference on Analysis and Recognition.
+
+[9] Otsu, N., "A Threshold Selection Method from Gray-Level Histograms," IEEE Transactions on Systems, Man, and Cybernetics, Vol. 9, No. 1, 1979, pp. 62-66.
+
+[10] Vincent, N., Bouletreau, V., Emptoz, H., Sabourin, R. “How to Use Fractal Dimensions to Qualify Writings and Writers”. Fractals, Vol. 8, No. 1 (2000) 85-97.
