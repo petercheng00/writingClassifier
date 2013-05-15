@@ -197,7 +197,9 @@ corresponds to punctuation or characters that were not properly
 grouped, while the latter case corresponds to cases where multiple
 lines of text were detected together. Each connected component,
 (without the detected lines), is now output at as a separate line
-image. An example of a failure case is shown in Figure \ref{fig:linefail}.
+image without the lines on top. 
+
+In some cases, our line segmentation technique was unable to correctly separate adjacent lines, where we are unable to correctly separate the two lines. This is seen in Figure \ref{fig:linefail}, where the lines are written very closely together and there is a slight angle to each line, where the first line dips in the center slightly and the second line slants downwards. These factors make it difficult to perform line segmentation.
 
 \begin{figure}
 \includegraphics{linefail.png}
@@ -217,18 +219,13 @@ width. After after filtering out connected components with fewer than
 500 pixels, we can then extract word images via the connected
 components.
 
-However when extracting features from words, it is useful to have
-words that are rotated such that their baseline is horizontal. There
-are a number of approaches to accomplish this [2], though we take a
-fairly simple approach. For each word, we compute its (rotated)
-bounding box, and rotate the image such that the bounding box is axis
-aligned. This tends to work well for a high percentage of words,
-though in certain cases it does not perform well, for instance as
-shown in Figure \ref{fig:failwordsegment}.
+It is useful to have words that are rotated such that their baseline is horizontal during feature extraction. Caesar, T., et al [2] cite a number of approaches to accomplish this, but we took a fairly simple approach. For each word, we computed its (rotated) bounding box, and rotated the image such that the bounding box is axis-aligned. As seen in Figure \ref{fig:wordfail}, this worked well for a high percentage of words but did not in certain cases. The writer used cursive writing with little spacing between consecutive words, which resulted in the three words “there”, “are”, and “21” being are segmented as one word.
+
 \begin{figure}
-  \label{fig:failwordsegment}
+  \includegraphics{wordfail.png}
   \caption{A case where word rotation does not perform properly, as
     the minimum bounding box for the shown word is not upright.}
+  \label{fig:wordfail}
 \end{figure}
 
 
@@ -315,11 +312,17 @@ The three writing zones are separated by the upper and lower
 baselines. The upper and lower baselines are defined via analysis via
 the histogram of number of dark pixels in every line, where 15\% of
 dark pixels exist above the upper baseline and 90\% of dark pixels
-exist above the lower baseline. The baselines are used to calculate
+exist above the lower baseline. An example is shown in Figure \ref{fig:wordheight}. The baselines are used to calculate
 features f1-f6, where the top line is first row of the image and
 bottom line is the bottom row. These features encode the height of
 words. The ratios of f1, f2, and f3 are taken to adjust for the
 variation in word size between writing samples.
+
+\begin{figure}
+  \includegraphics{wordheight.png}
+  \caption{The upper and lower baselines are shown in this example. The middle baseline halfway between the upper and lower baselines is also shown.}
+  \label{fig:wordheight}
+\end{figure}
 
 \subsubsection{Word Width}
 The width of words is measured by first finding the row with the most
@@ -331,9 +334,10 @@ taken with f2, the vertical height of the middle portion of the
 writing. An example of this is shown in Figure \ref{fig:wordwidth}
 
 \begin{figure}
-  \label{fig:wordwidth}
+  \includegraphics{fig:wordwidth.png}
   \caption{The line drawn in this image contains the most black/white
     transitions}
+  \label{fig:wordwidth}
 \end{figure}
 
 \subsubsection{Word Slant}
@@ -349,9 +353,10 @@ deviations are used to encode the slant for the word. An example of
 this is shown in Figure \ref{fig:wordslant}
 
 \begin{figure}
-  \label{fig:wordslant}
+  \includegraphics{wordslant.png}
   \caption{The slant of various parts of letters, as detected via
     adjacent pixels}
+  \label{fig:wordslant}
 \end{figure}
 
 
@@ -391,8 +396,9 @@ points and the right three points for each local maxima. All contour
 features we generated are summarized below. Figure \ref{fig:contourimage} also demonstrates an example of an extracted contour.
 
 \begin{figure}
+  \includegraphics{contourimage.png}
+\caption{From top to bottom: the rotated line image, the lower contour of the line, and the lower characteristic contour.}
 \label{fig:contourimage}
-\caption{A contour extracted from a line of text}
 \end{figure}
 
 \subsubsection{Connected Components and Enclosed Regions}
@@ -440,9 +446,11 @@ plot of 3 detected lines correspond to the 3 fractal dimension
 features is shown in Figure \ref{fig:fractaldimension}
 
 \begin{figure}
-  \label{fig:fractaldimension}
+  \includegraphics{fractaldimension.png}
   \caption{The slopes of the 3 straight lines that produce the best
     least squares fit constitute 3 features.}
+  \label{fig:fractaldimension}
+
 \end{figure}
 
 \section{Results}
