@@ -49,9 +49,9 @@ def avg_slopes(local_extrema, y, n=3):
     left_slopes = []
     right_slopes = []
     for ext in local_extrema:
-        slope, intercept = numpy.polyfit(range(n), y[ext-n:ext], 1)
+        slope, intercept = numpy.polyfit(range(n), y[ext - n:ext], 1)
         left_slopes.append(slope)
-        slope, intercept = numpy.polyfit(range(n), y[ext:ext+n], 1)
+        slope, intercept = numpy.polyfit(range(n), y[ext:ext + n], 1)
         right_slopes.append(slope)
     left_avg = sum(left_slopes) / len(left_slopes)
     right_avg = sum(right_slopes) / len(right_slopes)
@@ -64,16 +64,16 @@ def extract_contour_features(char_contour):
         *numpy.where(char_contour == 1)), key=itemgetter(1))])
     slope, intercept = numpy.polyfit(x, y, 1)
     y_pred = numpy.polyval([slope, intercept], x)
-    mean_sq_error = numpy.sum((y_pred - y)**2) / len(x)
+    mean_sq_error = numpy.sum((y_pred - y) ** 2) / len(x)
 
     # can tune this parameter
     n = 3
     local_max = scipy.signal.argrelmax(y, order=n)[0]
     local_max = local_max[local_max > n]
-    local_max = local_max[local_max < char_contour.shape[1]-n]
+    local_max = local_max[local_max < char_contour.shape[1] - n]
     local_min = scipy.signal.argrelmin(y, order=n)[0]
     local_min = local_min[local_min > n]
-    local_min = local_min[local_min < char_contour.shape[1]-n]
+    local_min = local_min[local_min < char_contour.shape[1] - n]
 
     max_freq = float(len(local_max)) / char_contour.shape[1]
     min_freq = float(len(local_min)) / char_contour.shape[1]
@@ -167,10 +167,7 @@ def main():
 
                 img = Image.open(file_name).rotate(angle).convert('L')
                 im = numpy.array(img) / 255
-                if count % 17 == 0:
-                    features = contour_feature(im, plot=True)
-                else:
-                    features = contour_feature(im, plot=False)
+                features = contour_feature(im, plot=False)
 
                 entry = {}
                 entry['writer'], entry['line'] = writer_num, line_num
