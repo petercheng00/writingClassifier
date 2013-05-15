@@ -113,6 +113,7 @@ writing samples, we reserved
 25\% to be our own testing set. An example of a sample document image is shown in Figure \ref{fig:docImage}.
 
 \begin{figure}
+\centering \fbox{\includegraphics[width=4in, height=5in]{docimage.jpg}}
 \caption{A sample input document image}
 \label{fig:docImage}
 \end{figure}
@@ -168,8 +169,9 @@ features.
 \subsubsection{Line Segmentation}
 
 \begin{figure}
+  \centering \includegraphics[width=4in, height=4in]{linesdetected.jpg}
   \caption{Line segments detected on a document image roughly
-    correspond to a line of text}
+    correspond to lines of text}
 \label{fig:houghLineDetect}
 \end{figure}
 
@@ -201,7 +203,7 @@ image without the lines on top.
 In some cases, our line segmentation technique was unable to correctly separate adjacent lines, where we are unable to correctly separate the two lines. This is seen in Figure \ref{fig:linefail}, where the lines are written very closely together and there is a slight angle to each line, where the first line dips in the center slightly and the second line slants downwards. These factors make it difficult to perform line segmentation.
 
 \begin{figure}
-\includegraphics{linefail.png}
+\centering \includegraphics{linefail.png}
 \caption{In this case, line segmentation failed to perform properly because two lines were very close together and a single detected line segment spanned both lines.}
 \label{fig:linefail}
 \end{figure}
@@ -218,12 +220,20 @@ width. After after filtering out connected components with fewer than
 500 pixels, we can then extract word images via the connected
 components.
 
-It is useful to have words that are rotated such that their baseline is horizontal during feature extraction. Caesar, T., et al [2] cite a number of approaches to accomplish this, but we took a fairly simple approach. For each word, we computed its (rotated) bounding box, and rotated the image such that the bounding box is axis-aligned. As seen in Figure \ref{fig:wordfail}, this worked well for a high percentage of words but did not in certain cases. The writer used cursive writing with little spacing between consecutive words, which resulted in the three words “there”, “are”, and “21” being are segmented as one word.
+It is useful to have words that are rotated such that their baseline
+is horizontal during feature extraction. Caesar, T., et al [2] cite a
+number of approaches to accomplish this, but we took a fairly simple
+approach. For each word, we computed its (rotated) bounding box, and
+rotated the image such that the bounding box is axis-aligned. As seen
+in Figure \ref{fig:wordfail}, this worked well for a high percentage
+of words but did not in certain cases. The writer used cursive writing
+with little spacing between consecutive words, which resulted in the
+three words “there”, “are”, and “21” being are segmented as one word.
 
 \begin{figure}
-  \includegraphics{wordfail.png}
-  \caption{A case where word rotation does not perform properly, as
-    the minimum bounding box for the shown word is not upright.}
+  \centering \includegraphics{wordfail.png}
+  \caption{A case where word segmentation does not perform properly,
+    as adjacent words are connected.}
   \label{fig:wordfail}
 \end{figure}
 
@@ -236,7 +246,6 @@ the previous two sections. A listing of each feature is shown in
 Figure \ref{fig:featureList}
 
 \begin{figure}
-  \label{fig:featureList}
   \begin{multicols}{3}
     \begin{enumerate*}
     \item Upper baseline to top line distance
@@ -297,6 +306,8 @@ Figure \ref{fig:featureList}
     \item Fractal dimension slope 3
     \end{enumerate*}
   \end{multicols}
+  \caption{The features we extracted from each input document image}
+  \label{fig:featureList}
 \end{figure}
 
 \subsection{Word Features}
@@ -319,7 +330,7 @@ words. The ratios of f1, f2, and f3 are taken to adjust for the
 variation in word size between writing samples.
 
 \begin{figure}
-  \includegraphics{wordheight.png}
+  \centering \includegraphics{wordheight.png}
   \caption{The upper and lower baselines are shown in this example. The middle baseline halfway between the upper and lower baselines is also shown.}
   \label{fig:wordheight}
 \end{figure}
@@ -334,7 +345,7 @@ taken with f2, the vertical height of the middle portion of the
 writing. An example of this is shown in Figure \ref{fig:wordwidth}
 
 \begin{figure}
-  \includegraphics{wordwidth.png}
+  \centering \includegraphics{wordwidth.png}
   \caption{The line drawn in this image contains the most black/white
     transitions}
   \label{fig:wordwidth}
@@ -353,7 +364,7 @@ deviations are used to encode the slant for the word. An example of
 this is shown in Figure \ref{fig:wordslant}
 
 \begin{figure}
-  \includegraphics{wordslant.png}
+  \centering \includegraphics{wordslant.png}
   \caption{The slant of various parts of letters, as detected via
     adjacent pixels}
   \label{fig:wordslant}
@@ -398,7 +409,7 @@ features we generated are summarized below. Figure
 contour.
 
 \begin{figure}
-  \includegraphics{contourimage.png}
+  \centering \includegraphics{contourimage.png}
   \caption{From top to bottom: the rotated line image, the lower
     contour of the line, and the lower characteristic contour.}
   \label{fig:contourimage}
@@ -449,7 +460,7 @@ plot of 3 detected lines correspond to the 3 fractal dimension
 features is shown in Figure \ref{fig:fractaldimension}
 
 \begin{figure}
-  \includegraphics{fractaldimension.png}
+  \centering \includegraphics{fractaldimension.png}
   \caption{The slopes of the 3 straight lines that produce the best
     least squares fit constitute 3 features.}
   \label{fig:fractaldimension}
