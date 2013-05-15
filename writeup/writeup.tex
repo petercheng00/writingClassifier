@@ -113,12 +113,11 @@ writing samples, we reserved
 25\% to be our own testing set. An example of a sample document image is shown in Figure \ref{fig:docImage}.
 
 \begin{figure}
-\label{fig:docImage}
-insert doc image
 \caption{A sample input document image}
+\label{fig:docImage}
 \end{figure}
 
-We started with trying to classify our dataset with each character’s
+We started with trying to classify our dataset with each character's
 appearance via Optical Character Recognition, and quickly concluded
 that it introduced more error and uncertainty than necessary. Instead,
 we perform a number of preprocessing and segmentation steps described
@@ -150,8 +149,8 @@ The first step in preprocessing is to translate each input color image
 into a binary black and white image. To accomplish this, an intensity
 threshold is calculated, such that pixels with intensity above that
 value are set to 1, while the rest are set to 0. This intensity
-threshold is calculated using Matlab’s “graythresh” function, which
-performs Otsu’s method for binary thresholding
+threshold is calculated using Matlab's ``graythresh'' function, which
+performs Otsu's method for binary thresholding
 \cite{ThresholdSelection}. Following this binarization, we then trim
 off the margins of each image, as writing samples are centered around
 different locations on the page. This is done simply by retaining the
@@ -169,22 +168,22 @@ features.
 \subsubsection{Line Segmentation}
 
 \begin{figure}
-  \label{fig:houghLineDetect}
   \caption{Line segments detected on a document image roughly
     correspond to a line of text}
+\label{fig:houghLineDetect}
 \end{figure}
 
 To perform line segmentation, the Hough-transform-based algorithm
 proposed by Louloudis, G., et al, \cite{BlockBased} is loosely
-followed. First, we use Matlab’s probabilistic Hough line segment
+followed. First, we use Matlab's probabilistic Hough line segment
 detector (HoughlinesP) implementation to detect lines on the document
 images, preprocessed after the previous section. We restrict Hough
 peak detection to only occur in the angle domain such that detected
 lines deviate at most 5 degrees from horizontal. We bin angles at a
 resolution of 1 degree, and the rho parameter at a resolution of 1
 pixel. The parameters for minimum line length and maximum gap within a
-line are more important, and are set to be 75\% of the image’s width
-and 10\% of the image’s width. An example of such detected lines is
+line are more important, and are set to be 75\% of the image's width
+and 10\% of the image's width. An example of such detected lines is
 shown in Figure \ref{fig:houghLineDetect}. Each detected line is then
 drawn onto the word image, such that pixel values corresponding to the
 line are set to 1. Now, connected components are detected on the image
@@ -211,8 +210,8 @@ segmentation method described in the previous section. Essentially,
 smaller lines are detected within each line image, such that
 individual words become the connected components. For this application
 we use the same angle and offset thresholds and resolutions as before,
-but set the minimum line length to be 2\% of the line image’s width,
-while the maximum gap in a line is 1.5\% of the line image’s
+but set the minimum line length to be 2\% of the line image's width,
+while the maximum gap in a line is 1.5\% of the line image's
 width. After after filtering out connected components with fewer than
 500 pixels, we can then extract word images via the connected
 components.
@@ -236,70 +235,71 @@ shown in Figure \ref{fig:failwordsegment}.
 \label{sec:feature}
 In this section, we describe the features recovered from line images
 and word images, after preprocessing and segmentation, as described in
-the previous two sections. A listing of each feature is shown in Figure \ref{fig:featureList}
+the previous two sections. A listing of each feature is shown in
+Figure \ref{fig:featureList}
 
 \begin{figure}
-\label{fig:featureList}
-\begin{multicols}{3}
-\begin{enumerate*}
-\item upper baseline - topline 				
-\item lower baseline - upper baseline 			
-\item bottom line - lowerbaseline 			
-\item f1 / f2 							
-\item f1 / f3 							
-\item f2 / f3 							
-\item median of the gap lengths 				
-\item f2 / f7 							
-\item average of slant angles (degrees) 			
-\item std dev of slant angles (degrees) 			
-\item line angle 						
-\item slant of lower contour				
-\item mean sq error of lower contour			
-\item freq of local max for lower contour			
-\item freq of local min for lower contour			
-\item avg left slope of local max for lower contour	
-\item avg right slope of local max  for lower contour	
-\item avg left slope of local min for lower contour	
-\item avg right slope of local min for lower contour  	
-\item 12 for upper contour					
-\item 13 for upper contour					
-\item 14 for upper contour					
-\item 15 for upper contour					
-\item 16 for upper contour					
-\item 17 for upper contour					
-\item 18 for upper contour					
-\item 19 for upper contour					
-\item avg width of connected components		
-\item avg height of connected components		
-\item std dev of width of ccs				
-\item std dev of height of ccs				
-\item avg dist between adjacent ccs			
-\item std dev of dist between adjacent ccs		
-\item avg area of enclosed regions			
-\item avg length of major axis of ers			
-\item avg length of minor axis of ers			
-\item avg orientation of ers					
-\item avg eccentricity of ers				
-\item avg equiv diameter squared of ers			
-\item avg extent of ers					
-\item avg perimeter of ers					
-\item avg form factor of ers				
-\item avg roundness of ers					
-\item std dev of 34						
-\item .							
-\item .							
-\item .							
-\item .							
-\item .							
-\item .							
-\item .							
-\item .							
-\item std dev of 43						
-\item fractal slope 1						
-\item fractal slope 2						
-\item fractal slope 3	
-\end{enumerate*}
-\end{multicols}
+  \label{fig:featureList}
+  \begin{multicols}{3}
+    \begin{enumerate*}
+    \item Upper baseline to top line distance
+    \item Lower baseline to upper baseline distance
+    \item Bottom line to lower baseline distance
+    \item 1 / 2
+    \item 1 / 3
+    \item 2 / 3
+    \item Median of the gap lengths
+    \item 2 / 7
+    \item Average slant angle
+    \item Std dev of slant angles
+    \item Line angle
+    \item Slant of lower contour
+    \item Mean squared error of lower contour
+    \item Freq of local max for lower contour
+    \item Freq of local min for lower contour
+    \item Avg left slope of local max for lower contour
+    \item Avg right slope of local max for lower contour
+    \item Avg left slope of local min for lower contour
+    \item Avg right slope of local min for lower contour
+    \item 12 for upper contour
+    \item 13 for upper contour
+    \item 14 for upper contour
+    \item 15 for upper contour
+    \item 16 for upper contour
+    \item 17 for upper contour
+    \item 18 for upper contour
+    \item 19 for upper contour
+    \item Avg width of connected components
+    \item Avg height of connected components
+    \item Std dev of width of ccs
+    \item Std dev of height of ccs
+    \item Avg dist between adjacent ccs
+    \item Std dev of dist between adjacent ccs
+    \item Avg area of enclosed regions
+    \item Avg length of major axis of ers
+    \item Avg length of minor axis of ers
+    \item Avg orientation of ers
+    \item Avg eccentricity of ers
+    \item Avg equiv diameter squared of ers
+    \item Avg extent of ers
+    \item Avg perimeter of ers
+    \item Avg form factor of ers
+    \item Avg roundness of ers
+    \item Std dev of 34
+    \item Std dev of 35
+    \item Std dev of 36
+    \item Std dev of 37
+    \item Std dev of 38
+    \item Std dev of 39
+    \item Std dev of 40
+    \item Std dev of 41
+    \item Std dev of 42
+    \item std dev of 43
+    \item Fractal dimension slope 1
+    \item Fractal dimension slope 2
+    \item Fractal dimension slope 3
+    \end{enumerate*}
+  \end{multicols}
 \end{figure}
 
 \subsection{Word Features}
@@ -331,9 +331,9 @@ taken with f2, the vertical height of the middle portion of the
 writing. An example of this is shown in Figure \ref{fig:wordwidth}
 
 \begin{figure}
-  \label{fig:wordwidth}
   \caption{The line drawn in this image contains the most black/white
     transitions}
+  \label{fig:wordwidth}
 \end{figure}
 
 \subsubsection{Word Slant}
@@ -388,11 +388,13 @@ dividing the number of local extrema by the length of the contour. The
 local extrema are found by comparing the neighboring three points on
 either side. We also compute the average slopes of the left three
 points and the right three points for each local maxima. All contour
-features we generated are summarized below. Figure \ref{fig:contourimage} also demonstrates an example of an extracted contour.
+features we generated are summarized below. Figure
+\ref{fig:contourimage} also demonstrates an example of an extracted
+contour.
 
 \begin{figure}
-\label{fig:contourimage}
-\caption{A contour extracted from a line of text}
+  \caption{A contour extracted from a line of text}
+  \label{fig:contourimage}
 \end{figure}
 
 \subsubsection{Connected Components and Enclosed Regions}
@@ -427,7 +429,7 @@ corresponding y values are log[A(Xn)] - log(n).
 
 Using the Minkowski-Bouligand dimension, the fractal behavior of the X
 set is expressed by the linear relationship between log[A(Xn)] and
-log(n) \cite{SyntheticParameters}. In plotting the x’s and y’s, the
+log(n) \cite{SyntheticParameters}. In plotting the x's and y's, the
 fractal features are the slopes of the three-part linear regression
 line that fits all possible points on the x-axis and and minimizes the
 mean squared error between the original points of the graph and the
@@ -440,9 +442,9 @@ plot of 3 detected lines correspond to the 3 fractal dimension
 features is shown in Figure \ref{fig:fractaldimension}
 
 \begin{figure}
-  \label{fig:fractaldimension}
   \caption{The slopes of the 3 straight lines that produce the best
     least squares fit constitute 3 features.}
+  \label{fig:fractaldimension}
 \end{figure}
 
 \section{Results}
