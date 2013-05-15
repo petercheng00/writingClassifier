@@ -71,13 +71,7 @@
 \maketitle % Print the title
 
 \section{Introduction}
-For our project we designed and tested an off-line classifier for
-gender prediction, using handwritten text. The inspiration for this
-project came from a Kaggle machine learning competition
-\cite{kaggle}. Kaggle provides sample training data, in the form of
-high-resolution (300 dpi) jpg images. Each image corresponds to a
-writing sample, and there are 4 writing samples for each of 475
-writers. The 4 samples correspond to:
+For our project we designed and tested an off-line classifier for gender prediction using handwritten text. The inspiration for this project came from a Kaggle machine learning competition \cite{kaggle}. Kaggle provides sample training data, in the form of high-resolution (300 dpi) jpg images. Each image corresponds to a writing sample, and there are 4 writing samples for each of 475 writers. The 4 samples correspond to:	
 
 \begin{enumerate}
 \item Arabic text, different text for each writer
@@ -96,13 +90,7 @@ using various canonical classifiers.
 
 \section{Background}
 \label{sec:background}
-For this particular contest, Kaggle provided 700+ extracted features
-for each writing sample. Upon examining relevant literature, we
-concluded that generating relevant features is as important, if not
-more so than honing the optimal classification model. We diverged our
-project to focus on our own feature extraction. In order to do so on
-the highly unconstrained Kaggle dataset, we will perform a number of
-preprocessing steps.
+For this particular contest, Kaggle provided 700+ extracted features for each writing sample. Upon relevant literature review, we concluded that generating relevant features is as important, if not more so than honing the optimal classification model. We diverged our project to focus on our own feature extraction. However, prior to doing so we will perform a number of preprocessing steps in order to do so on the highly unconstrained Kaggle dataset.
 
 The data we used consists of only the fourth sample for each writer,
 which is the same English text written by each writer. Since the data
@@ -110,39 +98,20 @@ supplied is for a competition, the test data did not have gender
 labels. We decided to limit our dataset to the labeled training data,
 where label = 1 for male and label = 0 for female. Of these 282
 writing samples, we reserved
-25\% to be our own testing set. An example of a sample document image is shown in Figure \ref{fig:docImage}.
+25\% to be our testing set. An example of a sample document image is shown in Figure \ref{fig:docImage}.
 
 \begin{figure}
 \caption{A sample input document image}
 \label{fig:docImage}
 \end{figure}
 
-We started with trying to classify our dataset with each character's
-appearance via Optical Character Recognition, and quickly concluded
-that it introduced more error and uncertainty than necessary. Instead,
-we perform a number of preprocessing and segmentation steps described
-in the next section. In this paper we refer to document image and word
-image, or line image, where each is an image containing a single
-document, word, or line respectively separately. Using the processed
-images, we generate a set of 56 features for each line. Then we
-calculate error rates from building several classification models, and
-summarize the results below.
+We started with trying to classify our dataset with each character’s appearance via Optical Character Recognition, and quickly concluded that it introduced more error and uncertainty than needed. Instead, we performed a number of preprocessing and segmentation steps as will be described in the next section. We refer to document image as an image containing a single document,  and word image, or line image, as an image containing a single word, or line respectively. Using the processed images, we generated a set of 56 features for each line image. From then on we calculate error rates from several classification models and summarize the results below.
 
 \section{Preprocessing and Segmentation}
 \label{sec:pands}
-Typically, when performing handwriting classification and feature
-extraction, binary images with a number of constraints are
-assumed. Typical constraints seen in previous work include having
-images in black and white, text all equally scaled among different
-writers, and lines written at consistent angles
-\cite{Preprocessing}. Furthermore, many feature extraction approaches
-are tuned to work on images of individual characters, words, or lines,
-instead of an entire document altogether. As a result, before
-extracting features, we perform a series of preprocessing steps, to
-normalize each document image \footnote{in this paper we refer to
+Typically, when performing handwriting classification and feature extraction, binary images with a number of constraints are assumed. Typical constraints seen in previous work include having images in black and white, text all equally scaled among different writers, and lines written at consistent angles \cite{Preprocessing}. Furthermore, many feature extraction approaches are tuned to work on images of individual characters, words, or lines, instead of an entire document altogether. As a result, prior to feature extraction, we perform a series of preprocessing steps to normalize each document image \footnote{in this paper we refer to
 document image, word image, or line image, where each is an image
-containing a single document, word, or line respectively.}, followed
-by segmentation procedures to segment out lines and words.
+containing a single document, word, or line respectively.}, followed by segmentation procedures to segment out lines and words.
 
 \subsection{Preprocessing}
 The first step in preprocessing is to translate each input color image
@@ -151,19 +120,14 @@ threshold is calculated, such that pixels with intensity above that
 value are set to 1, while the rest are set to 0. This intensity
 threshold is calculated using Matlab's ``graythresh'' function, which
 performs Otsu's method for binary thresholding
-\cite{ThresholdSelection}. Following this binarization, we then trim
+\cite{ThresholdSelection}. Following this binarization, we then trimmed
 off the margins of each image, as writing samples are centered around
-different locations on the page. This is done simply by retaining the
+different locations on the page. This is accomplished by retaining the
 image within the minimum axis-aligned bounding box containing all text
 in the image.
 
 \subsection{Segmentation}
-While features that are calculated on handwriting samples could
-theoretically be extracted from entire document images all at once,
-many of the features we use are specific to words or lines, so it
-makes sense to first break down the input space into line images and
-word images, so as to potentially reduce error when extracting these
-features.
+While features that are calculated on handwriting samples could theoretically be extracted from entire document images all at once, many of the features we use are specific to words or lines, so it makes sense to first break down the input space into line images and word images, so as to potentially reduce error when extracting these features. 
 
 \subsubsection{Line Segmentation}
 
@@ -177,26 +141,13 @@ To perform line segmentation, the Hough-transform-based algorithm
 proposed by Louloudis, G., et al, \cite{BlockBased} is loosely
 followed. First, we use Matlab's probabilistic Hough line segment
 detector (HoughlinesP) implementation to detect lines on the document
-images, preprocessed after the previous section. We restrict Hough
+images, preprocessed after the previous section. We restricted Hough
 peak detection to only occur in the angle domain such that detected
-lines deviate at most 5 degrees from horizontal. We bin angles at a
+lines deviate at most 5 degrees from horizontal. We binned angles at a
 resolution of 1 degree, and the rho parameter at a resolution of 1
-pixel. The parameters for minimum line length and maximum gap within a
-line are more important, and are set to be 75\% of the image's width
+pixel. Since the parameters for minimum line length and maximum gap within a line are more important, they are set to be 75\% of the image's width
 and 10\% of the image's width. An example of such detected lines is
-shown in Figure \ref{fig:houghLineDetect}. Each detected line is then
-drawn onto the word image, such that pixel values corresponding to the
-line are set to 1. Now, connected components are detected on the image
-with lines added, and if accurate lines were detected, each character
-and word in a line of text should all be in one contiguous connected
-component, held together by the lines drawn over them. Connected
-components with fewer than 10000 pixels are filtered out, as are those
-with a width less than 8 times the height, as the former case
-corresponds to punctuation or characters that were not properly
-grouped, while the latter case corresponds to cases where multiple
-lines of text were detected together. Each connected component,
-(without the detected lines), is now output at as a separate line
-image without the lines on top. 
+shown in Figure \ref{fig:houghLineDetect}. Each detected line is then ‘drawn’ onto the word image, such that pixel values corresponding to the line are set to 1. Next, connected components are detected on the image with added lines, and for lines that were accurately detected, each character and word in a line of text should all be in one contiguous connected component held together by the lines drawn over them. Connected components with fewer than 10000 pixels were filtered as it corresponds to punctuation or characters that were not properly grouped, along with  those with a width less than 8 times the height since they corresponds to cases where multiple lines of text were detected together. Each connected component is now output at as a separate line image without the lines on top.
 
 In some cases, our line segmentation technique was unable to correctly separate adjacent lines, where we are unable to correctly separate the two lines. This is seen in Figure \ref{fig:linefail}, where the lines are written very closely together and there is a slight angle to each line, where the first line dips in the center slightly and the second line slants downwards. These factors make it difficult to perform line segmentation.
 
@@ -208,12 +159,8 @@ In some cases, our line segmentation technique was unable to correctly separate 
 
 \subsubsection{Word Segmentation}
 The word segmentation procedure we use is similar to the line
-segmentation method described in the previous section. Essentially,
-smaller lines are detected within each line image, such that
-individual words become the connected components. For this application
-we use the same angle and offset thresholds and resolutions as before,
-but set the minimum line length to be 2\% of the line image's width,
-while the maximum gap in a line is 1.5\% of the line image's
+segmentation method described in the previous section. Individual words become the connected components as smaller lines are detected within each line image. We use the same angle and offset thresholds and resolutions as before, but set the minimum line length  to be 2\% of the line image's width,
+and the maximum gap in a line is 1.5\% of the line image's
 width. After after filtering out connected components with fewer than
 500 pixels, we can then extract word images via the connected
 components.
@@ -304,8 +251,7 @@ The first group of features are generated based on word images,
 referencing the work of Marti, U.-V., et al \cite{WriterID} where a
 feature vector is extracted from each word. These feature vectors are
 averaged by line to combine them with line-specific feature
-vectors. The word features include the width, slant, and height of the
-three main writing zones.
+vectors. The word features are comprised of the width, slant, and height of the three main writing zones, described below. 
 
 \subsubsection{Word Height}
 The three writing zones are separated by the upper and lower
@@ -313,7 +259,7 @@ baselines. The upper and lower baselines are defined via analysis via
 the histogram of number of dark pixels in every line, where 15\% of
 dark pixels exist above the upper baseline and 90\% of dark pixels
 exist above the lower baseline. An example is shown in Figure \ref{fig:wordheight}. The baselines are used to calculate
-features f1-f6, where the top line is first row of the image and
+features f1 through f6, where the top line is first row of the image and
 bottom line is the bottom row. These features encode the height of
 words. The ratios of f1, f2, and f3 are taken to adjust for the
 variation in word size between writing samples.
@@ -325,13 +271,7 @@ variation in word size between writing samples.
 \end{figure}
 
 \subsubsection{Word Width}
-The width of words is measured by first finding the row with the most
-black and white transitions. The number of white gaps between every
-group of black-white-black pixels is calculated and the median of
-these values is taken to represent the width of the writing. Again, to
-account for the word size variation between writers, the ratio is
-taken with f2, the vertical height of the middle portion of the
-writing. An example of this is shown in Figure \ref{fig:wordwidth}
+The row with the most black and white transitions defines the width of words. To represent the width of the writing, the number of white gaps between every group of black-white-black pixels is calculated and the median of these values is taken. Again, the ratio is taken with f2, the vertical height of the middle portion of the writing to account for the word size variation between writers. An example of this is shown in Figure \ref{fig:wordwidth}
 
 \begin{figure}
   \includegraphics{wordwidth.png}
@@ -341,16 +281,8 @@ writing. An example of this is shown in Figure \ref{fig:wordwidth}
 \end{figure}
 
 \subsubsection{Word Slant}
-Slant of writing is another useful characteristic that we encode by
-creating a histogram of angles for each word. First we convert the
-image to an outline, leaving only the perimeter pixels at the edge of
-each word. For each black pixel in the middle row of the middle zone
-(between upper and lower baselines), we calculate the angle from the
-pixel to a connected pixel intersecting with the upper and lower
-baselines. The angle between pairs of pixels and their connected
-intersecting pixels are collected and the average and standard
-deviations are used to encode the slant for the word. An example of
-this is shown in Figure \ref{fig:wordslant}
+We created a histogram of angles for each word in order to generate the slant of writing. First we converted the image to an outline such that only the perimeter pixels at the edge of each word remain. For each black pixel in the middle row of the middle zone (found between upper and lower baselines), we calculated the angle from the pixel to a connected pixel intersecting with the upper and lower baselines. To encode the slant for the word, the angle between pairs of pixels and their connected intersecting pixels are averaged and the standard deviations used.
+An example of this is shown in Figure \ref{fig:wordslant}
 
 \begin{figure}
   \includegraphics{wordslant.png}
@@ -375,25 +307,10 @@ angles of the lines detected in Section \ref{sec:pands} when
 performing line segmentation. If multiple line segments were detected
 for a single line, the average of their angles is used. For subsequent
 features, we use the rotated line so that writing is parallel with the
-x axis.
+x-axis.
 
 \subsubsection{Contour}
-The contour of the writing is a useful characteristic of
-handwriting. The upper and lower contours of a line are the sequence
-of uppermost and lowermost pixels in each column of a line. Gaps in
-which a column of the image has no black pixels are removed. The
-characteristic contours are generated by eliminating discontinuities
-in the upper and lower contours. This is done by shifting y
-coordinates of consecutive points so they are at most 1 pixel apart on
-the y axis. From the characteristic lower and upper contours, several
-features are extracted. The slope of the least squared regression line
-is calculated, as well as the mean squared error for the line. The
-frequency of local minima and maxima is determined for the contours by
-dividing the number of local extrema by the length of the contour. The
-local extrema are found by comparing the neighboring three points on
-either side. We also compute the average slopes of the left three
-points and the right three points for each local maxima. All contour
-features we generated are summarized below. Figure
+The upper and lower contours of a line are the sequence of uppermost and lowermost pixels in each column of a line. Gaps in which a column of the image has no black pixels are removed. By eliminating discontinuities in the upper and lower contours, the characteristic contours are generated via shifts of y-coordinates of consecutive points such that they are at most 1 pixel apart on the y-axis. Several features are extracted from the characteristic lower and upper contours, such as 1) the slope of the least squared regression line 2) the mean squared error for the line 3) the frequency of local minima and maxima, found by dividing the number of local extrema by the length of the contour, 4) the local extrema, determined by comparing the the neighboring three points on either side. The average slopes of the left three points and the right three points for each local maxima are computed, as well.  All contour features we generated are summarized below. Figure
 \ref{fig:contourimage} also demonstrates an example of an extracted
 contour.
 
@@ -405,21 +322,7 @@ contour.
 \end{figure}
 
 \subsubsection{Connected Components and Enclosed Regions}
-The next two sets of features correspond to characteristics of
-connected components and enclosed regions within a line of text. For a
-writer whose handwriting tends to overlap itself, connected
-components, or rectangular boxes that bound together the regions of
-connected objects will generally be larger, whereas for other writers,
-each connected component corresponds to a separate letter. The height,
-width, and spacing between connected components also reveals
-characteristics about writing as well. Enclosed regions are, in some
-sense, the opposite of connected components. These correspond to the
-areas within loops and other enclosed areas within a line of
-handwriting. Calculating values such as the roundness or eccentricity
-of each enclosed region can encapsulate information about how slanted
-a sample of text is, and the curvature of certain letters. The
-features derived from connected components and enclosed regions
-correspond to features 28-53 from the table in Figure
+The next two sets of features correspond to characteristics of connected components and enclosed regions within a line of text. Connected components, or rectangular boxes that bound together the regions of connected objects will generally be larger for writers whose handwriting tends to overlap itself, and corresponds to a separate letter for writers who fall outside this category. The height, width, and spacing between connected components provide additional characteristics about writing as well. Enclosed regions, on the other hand are the opposite of connected components. In a line of handwriting, they correspond to areas within loops and other enclosed areas. The roundness or eccentricity of each enclosed region can reveal information about how slanted a text sample is as well as the curvature of certain letters. The features derived from connected components and enclosed regions correspond to features 28-53 from the table in Figure
 \ref{fig:featureList}.
 
 \subsubsection{Fractal Dimensions}
