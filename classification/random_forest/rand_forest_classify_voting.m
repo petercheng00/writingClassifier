@@ -35,8 +35,9 @@ function rand_forest_classify_voting( labels, features, voteMapping, trainEndInd
     pred_labels = predict(tb, test_features);
     pred_labels = str2double(pred_labels);
     
-    pred_vote_labels = getAuthorLabels(test_mapping, pred_labels);
-
+    [pred_vote_labels,dists] = getAuthorLabels(test_mapping, pred_labels);
+    figure;
+    bar(dists);
     
     correct = (pred_vote_labels == test_vote_labels);
     

@@ -5,7 +5,7 @@ function nearest_neighbors( labels, features, trainEndInd)
     
     maxAccuracy = 0;
     bestK = 0;
-    for k = 1:100
+    for k = 1:200
     
     train_labels = labels(1:trainEndInd);
     test_labels = labels(trainEndInd+1:end);
@@ -22,13 +22,12 @@ function nearest_neighbors( labels, features, trainEndInd)
     accuracy = sum(correct)/size(test_labels,1);
     
     if (accuracy > maxAccuracy)
-        maxAccuracy = accuracy;
         bestK = k;
     end
     disp(['accuracy for k=', num2str(k), ' is ', num2str(accuracy)]);
     end
 
-    disp(['best is k= ', num2str(bestK), ' with ', num2str(maxAccuracy)]);
+    disp(['
 
 end
 

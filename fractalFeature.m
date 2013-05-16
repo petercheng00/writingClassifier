@@ -1,4 +1,5 @@
 function fractalFeature( inDir )
+addpath('SLMtools/SLMtools');
 addpath('boxcount/boxcount');
 addpath('preprocess/multiwaitbar');
 

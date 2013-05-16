@@ -14,7 +14,7 @@ function svm_rbf( labels, features, trainEndInd )
     bestC = 0;
     bestSigma = 0;
     for c = [1e3,1e2,1e1,1,1e-1,1e-2]
-        for sigma = [1,10,100]
+        for sigma = [1,1e1,1e2,1e3,1e4]
     disp(['training with c = ', num2str(c), ' sigma = ', num2str(sigma)]);
     svmStruct = svmtrain(train_features,train_labels, ...
                         'kernel_function', 'rbf', 'boxconstraint', c, 'rbf_sigma', sigma, 'tolkkt', 1e-3);
@@ -27,16 +27,11 @@ function svm_rbf( labels, features, trainEndInd )
     correct = (pred_labels == test_labels);
     accuracy = sum(correct) / size(pred_labels,1);
     
-    if (accuracy > bestAccuracy)
-        bestAccuracy = accuracy;
-        bestC = c;
-        bestSigma = sigma;
-    end
+    if (a
     
-    %disp(['accuracy is ', num2str(accuracy)]);
+    disp(['accuracy is ', num2str(accuracy)]);
         end
     end
-    disp(['best accuracy, c,  sigma are ', num2str(bestAccuracy), ', ' , num2str(bestC), ', ', num2str(bestSigma)]);
 end
 
 

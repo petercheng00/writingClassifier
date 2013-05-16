@@ -3,9 +3,9 @@ function rand_forest_classify( labels, features, trainEndInd)
         trainEndInd = round(0.75 * size(labels,1));
     end
     
-    numTrees = 50;
-    resamplePct = 0.5;
-    varsToSample = size(features,2)/2;
+    numTrees = 200;
+    resamplePct = 1;
+    varsToSample = size(features,2);
     minLeafSize = 10;
     
     train_labels = labels(1:trainEndInd);
@@ -15,7 +15,7 @@ function rand_forest_classify( labels, features, trainEndInd)
     
     disp('Building forest...');
     tb = TreeBagger(numTrees, train_features, train_labels, ...
-        'NPrint', 1, ...
+        'NPrint', 10, ...
         'FBoot', resamplePct, ...
         'OOBPred', 'on', ...
         'NVarToSample', varsToSample, ...
