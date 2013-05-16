@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.3.3)  14 MAY 2013 23:54
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.3.3)  16 MAY 2013 14:09
 entering extended mode
  %&-line parsing enabled.
 **\input writeup.tex
@@ -547,26 +547,61 @@ File: wordheight.png Graphic file (type png)
  <use wordheight.png>
 <wordwidth.png, id=143, 225.9642pt x 169.5936pt>
 File: wordwidth.png Graphic file (type png)
- <use wordwidth.png> [6 <./wordfail.png>] [7] [8 <./wordheight.png> <./wordwidt
-h.png>]
-<wordslant.png, id=221, 244.2726pt x 183.084pt>
+ <use wordwidth.png> [6 <./wordfail.png>] [7 <./wordheight.png>]
+<wordslant.png, id=216, 244.2726pt x 183.084pt>
 File: wordslant.png Graphic file (type png)
- <use wordslant.png> [9 <./wordslant.png>] <contourimage.png, id=236, 430.7292p
-t x 244.2726pt>
+ <use wordslant.png> [8 <./wordwidth.png> <./wordslant.png>]
+<contourimage.png, id=232, 430.7292pt x 244.2726pt>
 File: contourimage.png Graphic file (type png)
-
-<use contourimage.png>
+ <use contourimage.png>
 Overfull \hbox (12.4726pt too wide) in paragraph at lines 420--422
  [][] 
  []
 
-[10 <./contourimage.png>]
-<fractaldimension.png, id=248, 262.0992pt x 197.0562pt>
+[9 <./contourimage.png>]
+<fractaldimension.png, id=244, 262.0992pt x 197.0562pt>
 File: fractaldimension.png Graphic file (type png)
 
-<use fractaldimension.png> [11 <./fractaldimension.png>] (./writeup.bbl
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 5.
+<use fractaldimension.png> [10]
+Overfull \hbox (6.12282pt too wide) in paragraph at lines 501--509
+ [] 
+ []
 
+[11 <./fractaldimension.png>]
+<randforestKaggle_oob.jpg, id=260, 562.1pt x 421.575pt>
+File: randforestKaggle_oob.jpg Graphic file (type jpg)
+
+<use randforestKaggle_oob.jpg>
+<randforestOurs_oob.jpg, id=261, 562.1pt x 421.575pt>
+File: randforestOurs_oob.jpg Graphic file (type jpg)
+
+<use randforestOurs_oob.jpg>
+<randforestAvg_oob.jpg, id=262, 562.1pt x 421.575pt>
+File: randforestAvg_oob.jpg Graphic file (type jpg)
+
+<use randforestAvg_oob.jpg>
+<randforestVote_oob.jpg, id=263, 562.1pt x 421.575pt>
+File: randforestVote_oob.jpg Graphic file (type jpg)
+
+<use randforestVote_oob.jpg>
+<linearSVMVoteDistribution.jpg, id=265, 562.1pt x 421.575pt>
+File: linearSVMVoteDistribution.jpg Graphic file (type jpg)
+
+<use linearSVMVoteDistribution.jpg>
+<rbfSVMVoteDistribution.jpg, id=266, 562.1pt x 421.575pt>
+File: rbfSVMVoteDistribution.jpg Graphic file (type jpg)
+
+<use rbfSVMVoteDistribution.jpg>
+<randForestVoteDistribution.jpg, id=267, 943.525pt x 655.44875pt>
+File: randForestVoteDistribution.jpg Graphic file (type jpg)
+
+<use randForestVoteDistribution.jpg>
+<kNNVoteDistribution.jpg, id=268, 562.1pt x 421.575pt>
+File: kNNVoteDistribution.jpg Graphic file (type jpg)
+
+<use kNNVoteDistribution.jpg> [12 <./randforestKaggle_oob.jpg> <./randforestOur
+s_oob.jpg> <./randforestAvg_oob.jpg> <./randforestVote_oob.jpg>] (./writeup.bbl
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 5.
 (/usr/share/texmf-texlive/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
@@ -575,27 +610,30 @@ Underfull \hbox (badness 1048) in paragraph at lines 4--6
 $\T1/cmtt/m/n/10.95 http : / / www . kaggle . com / c /
  []
 
-[12]) [13] (./writeup.aux) ) 
+[13 <./linearSVMVoteDistribution.jpg> <./rbfSVMVoteDistribution.jpg> <./randFor
+estVoteDistribution.jpg> <./kNNVoteDistribution.jpg>]) [14] (./writeup.aux) ) 
 Here is how much of TeX's memory you used:
- 8121 strings out of 493848
- 118722 string characters out of 1152824
- 235748 words of memory out of 3000000
- 11131 multiletter control sequences out of 15000+50000
+ 8168 strings out of 493848
+ 119955 string characters out of 1152824
+ 236373 words of memory out of 3000000
+ 11166 multiletter control sequences out of 15000+50000
  19523 words of font info for 55 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 47i,10n,43p,302b,431s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super
--t1.enc}</usr/share/texmf/fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/
-texmf/fonts/type1/public/cm-super/sfcc1095.pfb></usr/share/texmf/fonts/type1/pu
-blic/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm14
-40.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm2074.pfb></usr/share/t
-exmf/fonts/type1/public/cm-super/sfsx1095.pfb></usr/share/texmf/fonts/type1/pub
-lic/cm-super/sfsx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfsx144
-0.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb></usr/share/te
-xmf/fonts/type1/public/cm-super/sftt1095.pfb>
-Output written on writeup.pdf (13 pages, 5510082 bytes).
+ 47i,10n,43p,492b,431s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/
+usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texmf-texl
+ive/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf/fonts/type1/pub
+lic/cm-super/sfbx1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc109
+5.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1095.pfb></usr/share/te
+xmf/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/publ
+ic/cm-super/sfrm2074.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfsx1095
+.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfsx1200.pfb></usr/share/tex
+mf/fonts/type1/public/cm-super/sfsx1440.pfb></usr/share/texmf/fonts/type1/publi
+c/cm-super/sfti1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1095.
+pfb>
+Output written on writeup.pdf (14 pages, 5807437 bytes).
 PDF statistics:
- 330 PDF objects out of 1000 (max. 8388607)
- 113 named destinations out of 1000 (max. 500000)
- 198 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 353 PDF objects out of 1000 (max. 8388607)
+ 117 named destinations out of 1000 (max. 500000)
+ 238 words of extra memory for PDF output out of 10000 (max. 10000000)
 

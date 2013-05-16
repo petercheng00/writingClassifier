@@ -1,0 +1,103 @@
+\message{ !name(writeup.tex)}% Short Sectioned Assignment
+% LaTeX Template
+% Version 1.0 (5/5/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+
+
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{float}
+
+\usepackage{multicol}
+\usepackage{mdwlist}
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{UC Berkeley, Computer Science} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Gender Classification of Handwritten Text \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Peter Cheng, Jeff Tsui, Alice Wang} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\message{ !name(writeup.tex) !offset(405) }
+\section{Results}
+\label{sec:results}
+In this section, we apply 4 classification techniques to 4 different
+feature sets, and compare their results. Because our features are
+independently acquired on a per-line basis, and the end goal is to
+classify each document, we decided upon three ways to aggregate our
+features and determine their performance. The first is simply to
+classify each line separately, and consider our accuracy to be the
+percentage of lines accurately classified. The second method is to
+average the feature vectors for all lines within a document, and end
+with an ``average'' line feature vector for each document. The third
+method is to classify each line separately, but classify each document
+based on the majority vote of its line classifications. As a
+benchmark, we also acquired Kaggle's 7067-length feature vectors for
+each document. Each of these 4 feature sets was run through the
+following classification techniques: linear SVM, SVM with an RBF
+kernel, random forest, and k nearest neighbors. Accuracies of each can
+be seen in Figure \ref{fig:resultsTable}.
+
+\begin{figure}
+\begin{center}
+\begin{tabular} { | c | c | c | c | c | }
+  \hline
+     &   SVM-Linear   &   SVM-RBF   &   Random Forest   &   kNN \\ \hline
+\end{tabular}
+\end{center}
+\caption{Accuracy of each classification method on each feature set}
+\label{fig:resultsTable}
+\end{figure}
+\message{ !name(writeup.tex) !offset(438) }
+
+\end{document}

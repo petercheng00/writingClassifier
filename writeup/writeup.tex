@@ -240,7 +240,7 @@ box is axis-aligned.
 \begin{figure}
   \centering \includegraphics{wordfail.png}
   \caption{A case where word segmentation does not perform properly,
-    as adjacent words are connected.}
+    as adjacent words are connected or close together.}
   \label{fig:wordfail}
 \end{figure}
 
@@ -338,7 +338,7 @@ ratios of 1, 2, and 3 are taken to adjust for the variation in word
 size between writing samples.
 
 \begin{figure}
-  \centering \includegraphics{wordheight.png}
+  \centering \includegraphics[width=2in]{wordheight.png}
   \caption{The upper and lower baselines are shown in this
     example. The middle baseline halfway between the upper and lower
     baselines is also shown.}
@@ -355,7 +355,7 @@ for the word size variation between writers. An example of this is
 shown in Figure \ref{fig:wordwidth}
 
 \begin{figure}
-  \centering \includegraphics{wordwidth.png}
+  \centering \includegraphics[width=2in]{wordwidth.png}
   \caption{The line drawn in this image contains the most black/white
     transitions}
   \label{fig:wordwidth}
@@ -475,38 +475,157 @@ features is shown in Figure \ref{fig:fractaldimension}
 \end{figure}
 
 \section{Results}
-need to add table here
-also talk about we can classify by line or average over writer
 \label{sec:results}
+In this section, we apply 4 classification techniques to 4 different
+feature sets, and compare their results. Because our features are
+independently acquired on a per-line basis, and the end goal is to
+classify each document, we decided upon three ways to aggregate our
+features and determine their performance. The first is simply to
+classify each line separately, and consider our accuracy to be the
+percentage of lines accurately classified. The second method is to
+average the feature vectors for all lines within a document, and end
+with an ``average'' line feature vector for each document. The third
+method is to classify each line separately, but classify each document
+based on the majority vote of its line classifications. As a
+benchmark, we also acquired Kaggle's 7067-length feature vectors for
+each document. Because the per-line classification method works with a
+feature vector for each line, it has roughly 10x amount training and
+test samples, which impacts the parameters chosen for classification,
+as described later in this section. Each of these 4 feature sets was
+run through the following classification techniques: linear SVM, SVM
+with an RBF kernel, random forest, and k nearest neighbors. Accuracies
+of each can be seen in Figure \ref{fig:resultsTable}.
+
+\begin{figure}
+  \begin{center}
+    \begin{tabular} { | l | c | c | c | c | }
+      \hline
+      & SVM-Linear & SVM-RBF & Random Forest & kNN \\ \hline
+      Kaggle Features (per document) & 75.2\% & 74.8\% & 73.8\% & 70.2\% \\ \hline
+      Our Features-per line & 65.5\% & 69.4\% & 66.1\% & 57.9\% \\ \hline
+      Our Features-averaged & 75.0\% & 82.4\% & 71.0\% & 73.5\% \\ \hline
+      Our Features-voting & 65.5\% & 70.6\% & 69.1\% & 64.7\% \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{Accuracy of each classification method on each feature set}
+  \label{fig:resultsTable}
+\end{figure}
+
+For SVMs, we found that the C (cost) value strongly impacted
+accuracy. Upon cross-validating across multiple values, we ended with
+a C value of 10 for the per-document feature sets, while a C value of
+1 performed better for the per-line feature set. The RBF SVM also has
+a $\sigma$ parameter, which strongly affects accuracy as well; we
+performed cross-validation to obtain $\sigma$ of 6 and 10 for the line
+and document feature sets respectively. The RBF SVM performed better
+than the linear one, and in fact better than all other
+classifiers. Our averaged feature vector also greatly outperformed the
+other feature sets here, including Kaggle's set.
+
+With the random forest method, we found no improvements in out-of-bag
+error past 100 trees, for each feature set. The minimum leaf size
+seemed to impact overfitting, and cross-validation resulted in a
+minimum leaf size of 50 for line features, and 10 for document
+features. Plots of the out-of-bag errors versus number of trees for
+each feature set is shown in Figure \ref{fig:oob}, and their
+asymptotic minimum values match the accuracies obtained.
+
+For K nearest neighbors, we simply used euclidean distance and
+cross-validated on values of k. The best values were 46, 18, 4, and 7,
+for the Kaggle, per-line, averaged, and voting datasets
+respectively. These numbers were not very sensitive however, in that
+changing K generally had minimal effect on accuracy. Here, the
+averaged dataset actually outperforms Kaggle's feature set again.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.4in,height=1.4in]{randforestKaggle_oob.jpg}
+  \includegraphics[width=1.4in,height=1.4in]{randforestOurs_oob.jpg}
+  \includegraphics[width=1.4in,height=1.4in]{randforestAvg_oob.jpg}
+  \includegraphics[width=1.4in,height=1.4in]{randforestVote_oob.jpg}
+  \caption{Out of bag error plots for the Kaggle, per-line, averaged,
+    and voting datasets from left to right.}
+  \label{fig:oob}
+\end{figure}
+
+Across all classifiers, the averaging method outperformed the voting
+method, followed by the per-line method. The per-line method performs
+the worst, as it is the most sensitive to outliers or errors in either
+segmentation or feature detection. The voting method performs better
+for all classifiers though only minimally, or identically, in the
+linear and rbf SVM. Plots of the majority classification votes
+received from each line across each document are shown in Figure
+\ref{fig:votes}. As evident, the linear SVM and rbf SVM plots have
+many documents where all lines receive the same classification. This
+is a positive result to see, as it implies that there is some amount
+of clustering of each line's feature vector within a document.
+
+Universally however, the averaging method is superior for our dataset
+on each of our classification methods, even beating Kaggle's on two of
+them. This suggests that there is likely a high amount of error and
+variance in our features, as the voting method should perform
+similarly to the averaging method, if provided with consistent line
+vectors. Averaging likely improves accuracy by working with an
+averaged feature vector, which is less prone to error.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.4in,height=1.4in]{linearSVMVoteDistribution.jpg}
+  \includegraphics[width=1.4in,height=1.4in]{rbfSVMVoteDistribution.jpg}
+  \includegraphics[width=1.4in,height=1.4in]{randForestVoteDistribution.jpg}
+  \includegraphics[width=1.4in,height=1.4in]{kNNVoteDistribution.jpg}
+  \caption{Each bar represents the number of majority votes received
+    on each document. Bars with values near 1 represent a high amount
+    of certainty and agreement among lines in a document, while values
+    near 0.5 indicate disagreement among lines. The plots are for the
+    linear SVM, RBF SVM, random forest, and k nearest neighbors
+    results from left to right.}
+  \label{fig:votes}
+\end{figure}
+
 \section{Conclusion}
 In our study of gender classification based on handwriting, we
 extracted 56 features based on word and line properties and applied
-several classification models. To benchmark our results, we also used
-the features provided in the Kaggle competition in comparison to our
-results. In general, our features resulted in slightly higher error
-rates than the Kaggle feature set, but neither performed extremely
-well. For line average, our features performed best with a [INSERT]
-average using a [INSERT] classifier. For document average, our
-features performed the best with [INSERT] average and using a [INSERT]
-classifier.
+several classification models. We combined these features in 3
+different ways, and classified them with 4 different classifiers. To
+benchmark our results, we also used the features provided in the
+Kaggle competition. In general, our features resulted in slightly
+higher error rates than the Kaggle feature set, though our averaging
+approach resulted in comparable results. Overall, the RBF SVM
+performed best, both in terms of single best accuracy, as well as
+accuracy over each dataset.
 
-There are several ways to improve our classification system. A
-modification to our preprocessing steps that segment documents into
-words and lines could result in higher accuracy in what each feature
-is measuring. Furthermore, we noticed that dividing highly variable
-handwritten documents with skewed lines and different sizes is not a
-trivial task. Much of our work consisted of improving the accuracy of
-segmentation and reducing false positives. To further decrease the
-error rate, we can continue to generate additional features. The
-Kaggle dataset has over 7000 features, while we achieved similar
-results at 56 features with rudimentary classifiers. Finally, we
-extracted most of our features based on methods developed for writer
-identification, since gender classification based on handwriting is
-similar to writer identification. However, it is very likely that the
-features we implemented, designed for writer identification, may not
-be best suited for the task of gender classification. Discovering more
-features that measure different properties of the handwriting and
-better separate our data would improve the accuracy of our classifier.
+While our results are somewhat lackluster for some of the
+classification schemes, our focus on feature extraction was rewarded
+in that some of our results are comparable to results obtained using
+Kaggle's provided featureset, obtained from a number of methods coming
+from recent state-of-the-art reseach. Furthermore, the dataset we
+worked with was not very large in size, and was intended for usage in
+a highly popular competition, so our results with fairly standard
+classifiers are not too surprising.
+
+Nevertheless, there are several clear ways to improve our
+classification system. An improvement to our preprocessing steps that
+segment documents into words and lines would result in higher accuracy
+in what each feature is measuring, by reducing input error to our
+feature extraction methods. Furthermore, we noticed that dividing
+highly variable handwritten documents with skewed lines and different
+sizes is not a trivial task. Much of our work consisted of improving
+the accuracy of segmentation and reducing false positives that would
+skew extracted feature vectors. This resulted in many false negatives
+that greatly reduced the amount of useful input data. To further
+decrease the error rate, we could continue to generate additional
+features as well. The Kaggle dataset has over 7000 features, while we
+achieved similar results at 56 features with rudimentary
+classifiers. Finally, we extracted most of our features based on
+methods developed for writer identification, since gender
+classification based on handwriting is similar to writer
+identification. However, it is very likely that many of the features
+we implemented, designed for writer identification, may not be best
+suited for the task of gender classification. Performing more
+literature research to search for more features that measure different
+properties of handwriting and better separate our data would
+improve the accuracy of our classifier.
 
 
 

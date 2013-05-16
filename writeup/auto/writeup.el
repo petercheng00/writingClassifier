@@ -16,7 +16,10 @@
      "fig:wordslant"
      "fig:contourimage"
      "fig:fractaldimension"
-     "sec:results")
+     "sec:results"
+     "fig:resultsTable"
+     "fig:oob"
+     "fig:votes")
     (TeX-add-symbols
      '("horrule" 1))
     (TeX-run-style-hooks

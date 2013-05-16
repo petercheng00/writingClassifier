@@ -1,0 +1,204 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=prv_writeup 2013.5.16)  16 MAY 2013 13:01
+entering extended mode
+ %&-line parsing enabled.
+**&prv_writeup _region_.tex
+(./_region_.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, farsi, arabic, croatian, bulgarian, ukrainian, russian, czech, slov
+ak, danish, dutch, finnish, french, basque, ngerman, german, german-x-2009-06-1
+9, ngerman-x-2009-06-19, ibycus, monogreek, greek, ancientgreek, hungarian, san
+skrit, italian, latin, latvian, lithuanian, mongolian2a, mongolian, bokmal, nyn
+orsk, romanian, irish, coptic, serbian, turkish, welsh, esperanto, uppersorbian
+, estonian, indonesian, interlingua, icelandic, kurmanji, slovenian, polish, po
+rtuguese, spanish, galician, catalan, swedish, ukenglish, pinyin, loaded.
+CUSTOMISED FORMAT. Preloaded files:
+        .
+scrartcl.cls    2009/07/24 v3.04a KOMA-Script document class (article)
+scrkbase.sty    2009/07/24 v3.04a KOMA-Script package (KOMA-Script-dependent ba
+sics and keyval usage)
+ scrbase.sty    2009/07/24 v3.04a KOMA-Script package (KOMA-Script-independent 
+basics and keyval usage)
+  keyval.sty    1999/03/16 v1.13 key=value parser (DPC)
+scrlfile.sty    2009/03/25 v3.03 KOMA-Script package (loading files)
+tocbasic.sty    2009/06/08 v3.03b KOMA-Script package (handling toc-files)
+scrsize11pt.clo    2009/07/24 v3.04a KOMA-Script font size class option (11pt)
+typearea.sty    2009/07/24 v3.04a KOMA-Script package (type area)
+ fontenc.sty
+   t1enc.def    2005/09/27 v1.99g Standard LaTeX file
+   babel.sty    2008/07/06 v3.8l The Babel package
+ english.ldf    2005/03/30 v3.3o English support from the babel system
+ amsmath.sty    2000/07/18 v2.13 AMS math features
+ amstext.sty    2000/06/29 v2.01
+  amsgen.sty    1999/11/30 v2.0
+  amsbsy.sty    1999/11/29 v1.2d
+  amsopn.sty    1999/12/14 v2.01 operator names
+amsfonts.sty    2009/06/22 v3.00 Basic AMSFonts support
+  amsthm.sty    2004/08/06 v2.20
+graphicx.sty    1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+graphics.sty    2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+    trig.sty    1999/03/16 v1.09 sin cos tan (DPC)
+graphics.cfg    2009/08/28 v1.8 graphics configuration of TeX Live
+   dvips.def    1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+  subfig.sty    2005/06/28 ver: 1.3 subfig package
+ caption.sty    2009/10/09 v3.1k Customizing captions (AR)
+caption3.sty    2009/10/09 v3.1k caption3 kernel (AR)
+ amssymb.sty    2009/06/22 v3.00
+hyperref.sty    2009/10/09 v6.79a Hypertext links for LaTeX
+   ifpdf.sty    2009/04/10 v2.0 Provides the ifpdf switch (HO)
+  ifvtex.sty    2008/11/04 v1.4 Switches for detecting VTeX and its modes (HO)
+ ifxetex.sty    2009/01/23 v0.5 Provides ifxetex conditional
+ hycolor.sty    2009/10/02 v1.5 Code for color options of hyperref/bookmark (HO
+)
+xcolor-patch.sty    2009/10/02 xcolor patch
+  pd1enc.def    2009/10/09 v6.79a Hyperref: PDFDocEncoding definition (HO)
+etexcmds.sty    2007/12/12 v1.2 Prefix for e-TeX command names (HO)
+infwarerr.sty    2007/09/09 v1.2 Providing info/warning/message (HO)
+hyperref.cfg    2002/06/06 v1.2 hyperref configuration of TeXLive
+kvoptions.sty    2009/08/13 v3.4 Keyval support for LaTeX options (HO)
+kvsetkeys.sty    2009/07/30 v1.5 Key value parser with default handler support 
+(HO)
+     url.sty    2006/04/12  ver 3.3  Verb mode for urls, etc.
+  bitset.sty    2007/09/28 v1.0 Data type bit set (HO)
+ intcalc.sty    2007/09/27 v1.1 Expandable integer calculations (HO)
+bigintcalc.sty    2007/11/11 v1.1 Expandable big integer calculations (HO)
+pdftexcmds.sty    2009/09/23 v0.6 LuaTeX support for pdfTeX utility functions (
+HO)
+ifluatex.sty    2009/04/17 v1.2 Provides the ifluatex switch (HO)
+ ltxcmds.sty    2009/08/05 v1.0 Some LaTeX kernel commands for general use (HO)
+
+atbegshi.sty    2008/07/31 v1.9 At begin shipout hook (HO)
+  hdvips.def    2009/10/09 v6.79a Hyperref driver for dvips
+ pdfmark.def    2009/10/09 v6.79a Hyperref definitions for pdfmark specials
+   float.sty    2001/11/08 v1.3d Float enhancements (AL)
+multicol.sty    2008/12/05 v1.6h multicolumn formatting (FMi)
+ mdwlist.sty    1996/05/02 1.1 Various list-related things
+fancyhdr.sty    
+    umsa.fd    2009/06/22 v3.00 AMS symbols A
+    umsb.fd    2009/06/22 v3.00 AMS symbols B
+  t1cmtt.fd    1999/05/25 v2.5h Standard LaTeX font definitions
+  t1cmss.fd    1999/05/25 v2.5h Standard LaTeX font definitions
+        .
+No file _region_.aux.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 69.
+LaTeX Font Info:    ... okay on input line 69.
+(/usr/local/share/texmf/tex/latex/preview/preview.sty
+Package: preview 2010/02/14 CVS-1.126 (AUCTeX/preview-latex)
+
+(/usr/local/share/texmf/tex/latex/preview/prtightpage.def
+\PreviewBorder=\dimen133
+)
+(/usr/local/share/texmf/tex/latex/preview/prauctex.def
+No auxiliary output files.
+
+
+\hbadness=\count125
+\hfuzz=\dimen134
+(/usr/local/share/texmf/tex/latex/preview/prauctex.cfg))
+(/usr/local/share/texmf/tex/latex/preview/prfootnotes.def)
+\pr@snippet=\count126
+\pr@box=\box58
+\pr@output=\toks32
+
+Preview: Fontsize 10.95pt
+)
+Package caption Info: Begin \AtBeginDocument code.
+Package caption3 Info: subfig package 1.2 or 1.3 is loaded.
+LaTeX Info: Redefining \subref on input line 69.
+Package caption Info: Incompatible package detected (regarding \caption).
+(caption)             \caption = \protected\long macro:->\pr@protect@domacro {}
+{##1{}}\pr@\caption .
+
+
+Package caption Warning: \caption will not be redefined since it's already
+(caption)                redefined by a document class or package which is
+(caption)                unknown to the caption package.
+See the caption package documentation for explanation.
+
+Package caption Info: float package is loaded.
+Package caption Info: hyperref package is loaded.
+Package caption Info: End \AtBeginDocument code.
+Package hyperref Info: Link coloring OFF on input line 69.
+(/usr/share/texmf-texlive/tex/latex/hyperref/nameref.sty
+Package: nameref 2007/05/29 v2.31 Cross-referencing by name of section
+
+(/usr/share/texmf-texlive/tex/latex/oberdiek/refcount.sty
+Package: refcount 2008/08/11 v3.1 Data extraction from references (HO)
+)
+\c@section@level=\count127
+)
+LaTeX Info: Redefining \ref on input line 69.
+LaTeX Info: Redefining \pageref on input line 69.
+\AtBeginShipoutBox=\box59
+
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
+
+ !name(writeup.tex) !offset(405) 
+! Preview: Snippet 1 started.
+<-><->
+      
+l.72 \section
+             {Results}
+Not a real error.
+
+Preview: Tightpage -32891 -32891 32891 32891
+! Preview: Snippet 1 ended.(668846+0x27410796).
+<-><->
+      
+l.72 \section{Results}
+                      
+Not a real error.
+
+[1
+
+]
+
+LaTeX Warning: Reference `fig:resultsTable' on page 1 undefined on input line 8
+9.
+
+! Preview: Snippet 2 started.
+<-><->
+      
+l.91 \begin{figure}
+                   
+Not a real error.
+
+! Preview: Snippet 2 ended.(3276798+0x27410796).
+<-><->
+      
+l.100 \end{figure}
+                  
+Not a real error.
+
+[2
+
+
+
+]  !name(writeup.tex) !offset(438) 
+
+LaTeX Warning: There were undefined references.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 357 strings out of 486440
+ 5567 string characters out of 1043893
+ 212287 words of memory out of 3000000
+ 10888 multiletter control sequences out of 15000+50000
+ 15393 words of font info for 42 fonts, out of 3000000 for 9000
+ 714 hyphenation exceptions out of 8191
+ 27i,10n,37p,169b,337s stack positions out of 5000i,500n,10000p,200000b,50000s
+
+Output written on _region_.dvi (2 pages, 2440 bytes).
