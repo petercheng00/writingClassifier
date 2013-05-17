@@ -96,13 +96,13 @@ features using various canonical classifiers.
 
 \section{Background}
 \label{sec:background}
-For this particular contest, Kaggle provides 7000+ extracted features
+For this particular contest, Kaggle provides 7067 extracted features
 for each of the 1128 writing samples across 282 writers. In an attempt
 to simplify the problem, we opted to consider only the fourth sample
 for each writer, which is the same English text written by each
 writer. Since the data supplied is for a competition, the test data
 did not have gender labels. We thus limited our dataset to the labeled
-training data, where label = 1 for male and label = 0 for female. Of
+training data, where label = 1 for male and label = 0 for female writers. Of
 these 282 writing samples, we reserved 25\% to be our testing set.
 
 An example of a document image from our dataset is shown in Figure
@@ -129,7 +129,7 @@ of preprocessing, segmentation, and feature detection steps as will be
 described in the following sections. Throughout this paper, we will
 refer to document images as images containing a single document, while
 word images and line images correspond to images containing a single
-word or line, respectively.
+word or line respectively.
 
 \section{Preprocessing and Segmentation}
 \label{sec:pands}
@@ -499,7 +499,7 @@ of each can be seen in Figure \ref{fig:resultsTable}.
   \label{fig:resultsTable}
 \end{figure}
 
-For SVMs, we found that the C (cost) value strongly impacted
+For SVMs, we found that tweaking the C (cost) value had a strong effect on classification
 accuracy. Upon cross-validating across multiple values, we ended with
 a C value of 10 for the per-document feature sets, while a C value of
 1 performed better for the per-line feature set. The RBF SVM also has
@@ -586,9 +586,9 @@ accuracy over each dataset.
 While our results are somewhat lackluster for some of the
 classification schemes, our focus on feature extraction was rewarded
 in that some of our results are comparable to results obtained using
-Kaggle's provided featureset, obtained from a number of methods coming
-from recent state-of-the-art reseach. Furthermore, the dataset we
-worked with was not very large in size, and was intended for usage in
+Kaggle's provided feature set, obtained from a number of methods coming
+from recent state-of-the-art research. Furthermore, the dataset we
+worked with was not very large in size, and was intended to be used in
 a highly popular competition, so our results with fairly standard
 classifiers are not too surprising.
 
@@ -603,16 +603,16 @@ the accuracy of segmentation and reducing false positives that would
 skew extracted feature vectors. This resulted in many false negatives
 that greatly reduced the amount of useful input data. To further
 decrease the error rate, we could continue to generate additional
-features as well. The Kaggle dataset has over 7000 features, while we
+features as well. The Kaggle dataset has over 7067 features, while we
 achieved similar results at 56 features with rudimentary
 classifiers. Finally, we extracted most of our features based on
 methods developed for writer identification, since gender
 classification based on handwriting is similar to writer
 identification. However, it is very likely that many of the features
 we implemented, designed for writer identification, may not be best
-suited for the task of gender classification. Performing more
-literature research to search for more features that measure different
-properties of handwriting and better separate our data would
+suited for the task of gender classification. For future work, 
+researching for more features that detect different
+properties of handwriting to better separate our data would
 improve the accuracy of our classifier.
 
 
