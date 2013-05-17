@@ -125,7 +125,7 @@ We initially attempted to perform Optical Character Recognition on
 each image, in an attempt to link handwritten text across images,
 though we obtained poor results, and introduced more error and
 uncertainty than needed. Instead, we independently performed a number
-of preprocessing, segmentatio , and feature detection steps as will be
+of preprocessing, segmentation, and feature detection steps as will be
 described in the following sections. Throughout this paper, we will
 refer to document images as images containing a single document, while
 word images and line images correspond to images containing a single
@@ -135,8 +135,8 @@ word or line, respectively.
 \label{sec:pands}
 Typically, when performing handwriting classification and feature
 extraction, binary images with a number of constraints are
-assumed. Typical constraints seen in previous work include having
-images in black and white, text all equally scaled among different
+assumed. Typical constraints seen in previous works include having
+images in black and white text, all equally scaled among different
 writers, and lines written at consistent angles
 \cite{Preprocessing}. Furthermore, many feature extraction approaches
 are tuned to work on images of individual characters, words, or lines,
@@ -215,7 +215,7 @@ very close together.
 \end{figure}
 
 \subsubsection{Word Segmentation}
-For word segmentation, we use is a method similar to the line
+For word segmentation, we use a method similar to the line
 segmentation method described in the previous section. Beginning with
 line images, shorter lines are detected and drawn, such that each word
 is its own connected component. We use the same angle and offset
@@ -250,7 +250,7 @@ box is axis-aligned.
 In this section, we describe the features recovered from line images
 and word images, after preprocessing and segmentation, as described in
 the previous two sections. A listing of each feature is shown in
-Figure \ref{fig:featureList}
+Figure \ref{fig:featureList}.
 
 \begin{figure}
   \begin{multicols}{3}
@@ -327,21 +327,16 @@ height of the three main writing zones, described below.
 
 \subsubsection{Word Height}
 The three writing zones are separated by the upper and lower
-baselines. The upper and lower baselines are defined via analysis via
-the histogram of number of dark pixels in every line, where 15\% of
-dark pixels exist above the upper baseline and 90\% of dark pixels
+baselines. The upper and lower baselines are defined via a histogram of the number of black pixels in every line; 15\% of black pixels exist above the upper baseline and 90\% of black pixels
 exist above the lower baseline. An example is shown in Figure
-\ref{fig:wordheight}. The baselines are used to calculate features 1
-through 6, where the top line is first row of the image and bottom
-line is the bottom row. These features encode the height of words. The
-ratios of 1, 2, and 3 are taken to adjust for the variation in word
-size between writing samples.
+\ref{fig:wordheight}. The baselines are used to extract features 1
+through 6, which include the distance between the upper and lower baselines and the top and bottom lines, where the top line is the first row of the image and the bottom line is the bottom row. These features encode the height of the handwriting. The ratios of 1, 2, and 3 are taken to adjust for the variation in word size between writing samples.
 
 \begin{figure}
   \centering \includegraphics[width=2in]{wordheight.png}
   \caption{The upper and lower baselines are shown in this
-    example. The middle baseline halfway between the upper and lower
-    baselines is also shown.}
+    example. The middle baseline is also shown and lies halfway between the upper and lower
+    baselines.}
   \label{fig:wordheight}
 \end{figure}
 
@@ -362,15 +357,13 @@ shown in Figure \ref{fig:wordwidth}
 \end{figure}
 
 \subsubsection{Word Slant}
-We created a histogram of angles for each word in order to generate
-the slant of writing. First we converted the image to an outline such
+We created a histogram of angles for each word in order to calculate
+the slant of the handwriting. First we converted the image to an outline such
 that only the perimeter pixels at the edge of each word remain. For
-each black pixel in the middle row of the middle zone (found between
-upper and lower baselines), we calculated the angle from the pixel to
+each black pixel in the middle row of the middle baseline (halfway between the
+upper and lower baselines), we calculate the angle from the pixel to
 a connected pixel intersecting with the upper and lower baselines. To
-encode the slant for the word, the angle between pairs of pixels and
-their connected intersecting pixels are averaged and the standard
-deviations used.  An example of this is shown in Figure
+encode the slant for the word, we compute the average of all these angles and the standard deviation. An example of this is shown in Figure
 \ref{fig:wordslant}
 
 \begin{figure}
@@ -400,11 +393,11 @@ x-axis.
 
 \subsubsection{Contour}
 The upper and lower contours of a line are the sequence of uppermost
-and lowermost pixels in each column of a line. Gaps in which a column
-of the image has no black pixels are removed. By eliminating
-discontinuities in the upper and lower contours, the characteristic
-contours are generated via shifts of y-coordinates of consecutive
-points such that they are at most 1 pixel apart on the y-axis. Several
+and lowermost pixels in each column of a line image. Gaps in which a column
+of the image has no black pixels are removed. The characteristic
+contours are generated by shifting y-coordinates of consecutive
+points such that they are at most 1 pixel apart on the y-axis. This eliminates
+discontinuities in the contours. Several
 features are extracted from the characteristic lower and upper
 contours, such as 1) the slope of the least squared regression line 2)
 the mean squared error for the line 3) the frequency of local minima
@@ -412,8 +405,7 @@ and maxima, found by dividing the number of local extrema by the
 length of the contour, 4) the local extrema, determined by comparing
 the the neighboring three points on either side. The average slopes of
 the left three points and the right three points for each local maxima
-are computed, as well.  All contour features we generated are
-summarized below. Figure \ref{fig:contourimage} demonstrates an
+are computed, as well. Figure \ref{fig:contourimage} demonstrates an
 example of an extracted contour.
 
 \begin{figure}
@@ -444,14 +436,10 @@ table in Figure \ref{fig:featureList}.
 \subsubsection{Fractal Dimensions}
 Fractal dimensions encode the degree of irregularity and fragmentation
 of the handwriting, from which our final three features are
-derived\cite{FractalDimensions}. At a high level, they measure the
-area (measured in number of pixels) a handwritten text grows as a
-dilation operation is applied onto a line image. Given X as the
+derived\cite{FractalDimensions}. At a high level, they measure the space filling capacity of an image and is measured by a dilation operation on each line image. Given X as the
 contour of the handwriting sample, its fractal behavior is generated
 via the evolution of the areas of successive dilation sets of boxes on
-its contour. Xn is defined as the n-sized structuring square element,
-and A(X) denotes the area of set X. The x values are log(n), and
-corresponding y values are log[A(Xn)] - log(n).
+its contour. Xn is the set of boxes used in the dilation for n number of boxes where each box has area A(Xn). In Figure \ref{fig:fractaldimension}, the evolution graph plotting log(n) on the x axis and log[A(Xn)] - log(n) on the y axis is shown.
 
 Using the Minkowski-Bouligand dimension, the fractal behavior of the X
 set is expressed by the linear relationship between log[A(Xn)] and
